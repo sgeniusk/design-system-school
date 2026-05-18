@@ -16,13 +16,38 @@ export function Container({
   );
 }
 
+/**
+ * 별자리 로고 — 디자인 지식 그래프(온톨로지)를 직역한 마크.
+ * 노드 색이 의미를 담는다: 인디고=개념, 코랄=분석.
+ */
 export function BrandMark({ size = 28 }: { size?: number }) {
   return (
-    <span
+    <svg
       aria-hidden
-      className="surface-gradient inline-block shrink-0 animate-gradient-pan rounded-[8px]"
-      style={{ width: size, height: size }}
-    />
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      className="shrink-0"
+    >
+      <g
+        stroke="#5B43F5"
+        strokeOpacity="0.45"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      >
+        <line x1="8" y1="8.5" x2="15.5" y2="16.5" />
+        <line x1="23.5" y1="7" x2="15.5" y2="16.5" />
+        <line x1="15.5" y1="16.5" x2="8.5" y2="24.5" />
+        <line x1="15.5" y1="16.5" x2="24.5" y2="23" />
+        <line x1="23.5" y1="7" x2="24.5" y2="23" />
+      </g>
+      <circle cx="15.5" cy="16.5" r="4" fill="#5B43F5" />
+      <circle cx="8" cy="8.5" r="2.6" fill="#5B43F5" />
+      <circle cx="24.5" cy="23" r="2.6" fill="#5B43F5" />
+      <circle cx="23.5" cy="7" r="2.6" fill="#FF5C38" />
+      <circle cx="8.5" cy="24.5" r="2.6" fill="#FF5C38" />
+    </svg>
   );
 }
 
