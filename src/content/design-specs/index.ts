@@ -4,10 +4,12 @@ import { tossSpec } from "./toss";
 import { krdsSpec } from "./krds";
 import { gmarketSpec } from "./gmarket";
 import { wantedSpec } from "./wanted";
+import { lettersSpec } from "./letters";
 
 export const designSpecs: Record<string, AnalysisDesignSpec> = {
   toss: tossSpec,
   krds: krdsSpec,
   gmarket: gmarketSpec,
   wanted: wantedSpec,
+  letters: lettersSpec,
 };

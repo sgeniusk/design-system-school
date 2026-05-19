@@ -16,6 +16,7 @@ import Toss from "./analyses/toss.mdx";
 import Krds from "./analyses/krds.mdx";
 import Gmarket from "./analyses/gmarket.mdx";
 import Wanted from "./analyses/wanted.mdx";
+import Letters from "./analyses/letters.mdx";
 
 export const conceptBodies: Record<string, ComponentType> = {
   "design-system": DesignSystem,
@@ -35,6 +36,7 @@ export const analysisBodies: Record<string, ComponentType> = {
   krds: Krds,
   gmarket: Gmarket,
   wanted: Wanted,
+  letters: Letters,
 };
 
 export function getConceptBody(slug: string): ComponentType | undefined {

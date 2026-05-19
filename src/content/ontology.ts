@@ -186,6 +186,21 @@ export const analyses: AnalysisNode[] = [
     brandColor: "#3366FF",
     takeaway: "Figma 파일 자체가 단일 진실 공급원이 될 수 있다.",
   },
+  {
+    type: "analysis",
+    slug: "letters",
+    title: "Letters — Patients, not Paperwork",
+    org: "Letters",
+    industry: "global",
+    delivery: "docs-site",
+    summary:
+      "의료진의 행정 문서 부담을 AI로 줄여주는 제품의 마케팅 사이트. Framer로 만든 단색·부드러운 디자인.",
+    url: "https://letters.app/",
+    demonstrates: ["color", "typography", "visual-hierarchy", "spacing"],
+    designMd: "letters.design.md",
+    brandColor: "#2597D0",
+    takeaway: "제품의 약속이 색·모서리·모션을 한 톤으로 묶는다.",
+  },
 ];
 
 /** 글로벌 보너스 — 위키·컬렉션에서 가벼운 참고로 노출. */
