@@ -35,9 +35,10 @@ npm run check      # lint + typecheck + build
 
 ## 콘텐츠 스키마
 
-- `src/lib/types.ts` — `Concept` · `Analysis` · `LearnPath` · 그래프 타입
+- `src/lib/types.ts` — `Concept` · `Analysis` · `LearnPath` · `AnalysisDesignSpec` · 그래프 타입
 - `src/content/ontology.ts` — 노드 + 엣지(관계) 등록
 - `src/content/paths.ts` — 학습 경로
+- `src/content/design-specs/<slug>.ts` — `analysis` 노드의 디자인 스펙(색·타이포·여백·radius·컴포넌트)
 - `src/lib/content.ts` — 노드 조회·역참조·경로 헬퍼
 
 ## 노드 색 규칙 (의미 있는 색)
@@ -50,9 +51,10 @@ npm run check      # lint + typecheck + build
 
 ## DESIGN.md 규칙
 
-- 모든 `analysis` 노드는 `src/content/design-md/<slug>.design.md`를 가진다.
-- DESIGN.md는 **plain markdown**이어야 한다 (코딩 에이전트가 프로젝트에 드롭). MDX·JSX 금지.
-- 색·타이포·여백·elevation·반응형을 구조화된 마크다운으로 기술한다.
+- 모든 `analysis` 노드는 `src/content/design-specs/<slug>.ts`에 `AnalysisDesignSpec` 객체를 가진다. 색·타이포·여백·radius·컴포넌트의 **단일 진실 공급원(정본)**.
+- DESIGN.md 마크다운은 `src/lib/design-md.ts`의 `specToMarkdown()`이 spec에서 **생성**한다. 별도 `.design.md` 파일은 두지 않는다.
+- 상세 페이지의 시각화와 DESIGN.md 텍스트는 같은 spec에서 나온다. 데이터는 spec 한 곳에서만 수정한다.
+- 새 `analysis` 노드를 추가하면 `ontology.ts` 등록 + `analyses/<slug>.mdx` 본문 + `design-specs/<slug>.ts` + `design-specs/index.ts` 매핑을 같은 변경에서 함께 만든다.
 
 ## 작업 규칙
 

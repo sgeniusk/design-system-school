@@ -1,9 +1,13 @@
 // 온톨로지 노드 조회·역참조·경로 헬퍼.
-import { readFileSync } from "node:fs";
-import path from "node:path";
 import { analyses, concepts, globalReferences } from "@/content/ontology";
 import { paths } from "@/content/paths";
-import type { AnalysisNode, ConceptNode, LearnPath } from "@/lib/types";
+import { designSpecs } from "@/content/design-specs";
+import type {
+  AnalysisDesignSpec,
+  AnalysisNode,
+  ConceptNode,
+  LearnPath,
+} from "@/lib/types";
 
 export function getConcepts(): ConceptNode[] {
   return concepts;
@@ -70,10 +74,9 @@ export function getPathConcepts(pathSlug: string): ConceptNode[] {
     .filter((c): c is ConceptNode => Boolean(c));
 }
 
-/** DESIGN.md 원문 텍스트를 읽는다 (서버에서만 호출). */
-export function readDesignMd(filename: string): string {
-  const filePath = path.join(process.cwd(), "src/content/design-md", filename);
-  return readFileSync(filePath, "utf8");
+/** 한 분석의 디자인 스펙 — 시각화·DESIGN.md 생성의 정본. */
+export function getDesignSpec(slug: string): AnalysisDesignSpec | undefined {
+  return designSpecs[slug];
 }
 
 /** 온톨로지 전체 통계. */

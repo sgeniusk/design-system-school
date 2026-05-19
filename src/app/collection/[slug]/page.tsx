@@ -3,13 +3,19 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/Layout";
 import { DesignMdViewer } from "@/components/DesignMdViewer";
+import { ColorPalette } from "@/components/analysis/ColorPalette";
+import { TypeScale } from "@/components/analysis/TypeScale";
+import { SpacingRadius } from "@/components/analysis/SpacingRadius";
+import { ComponentList } from "@/components/analysis/ComponentList";
+import { PrinciplesPanel } from "@/components/analysis/PrinciplesPanel";
 import { DELIVERY_LABEL, INDUSTRY_LABEL } from "@/lib/types";
 import {
   getAnalyses,
   getAnalysis,
   getConceptsForAnalysis,
-  readDesignMd,
+  getDesignSpec,
 } from "@/lib/content";
+import { specToMarkdown } from "@/lib/design-md";
 import { getAnalysisBody } from "@/content/bodies";
 
 export function generateStaticParams() {
@@ -30,6 +36,21 @@ export async function generateMetadata({
   };
 }
 
+/** 분석 페이지의 시각화 섹션 제목 — eyebrow + 큰 제목. */
+function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
+  return (
+    <div className="mb-6">
+      <div className="flex items-center gap-2">
+        <span className="h-2 w-2 rounded-pill bg-pop" aria-hidden />
+        <h2 className="eyebrow text-ink-faint">{eyebrow}</h2>
+      </div>
+      <h3 className="mt-2 text-[22px] font-bold tracking-tight text-ink">
+        {title}
+      </h3>
+    </div>
+  );
+}
+
 export default async function AnalysisPage({
   params,
 }: {
@@ -41,7 +62,8 @@ export default async function AnalysisPage({
 
   const Body = getAnalysisBody(slug);
   const concepts = getConceptsForAnalysis(slug);
-  const designMd = readDesignMd(analysis.designMd);
+  const spec = getDesignSpec(slug);
+  const designMd = spec ? specToMarkdown(spec) : null;
 
   return (
     <>
@@ -86,12 +108,54 @@ export default async function AnalysisPage({
       </header>
 
       <Container className="py-14">
-        <div className="grid gap-12 lg:grid-cols-[1fr_320px]">
+        {spec ? (
+          <>
+            <section>
+              <SectionTitle eyebrow="Color" title="브랜드를 이루는 색" />
+              <ColorPalette groups={spec.colors} />
+            </section>
+
+            <section className="mt-16">
+              <SectionTitle eyebrow="Typography" title="글자의 위계" />
+              <TypeScale
+                font={spec.font}
+                scale={spec.typeScale}
+                note={spec.typographyNote}
+              />
+            </section>
+
+            <section className="mt-16">
+              <SectionTitle eyebrow="Spacing & Radius" title="간격과 형태" />
+              <SpacingRadius
+                spacing={spec.spacing}
+                radii={spec.radii}
+                elevationNote={spec.elevationNote}
+              />
+            </section>
+
+            <section className="mt-16">
+              <SectionTitle eyebrow="Components" title="컴포넌트" />
+              <ComponentList components={spec.components} />
+            </section>
+
+            <section className="mt-16">
+              <SectionTitle eyebrow="Principles" title="원칙과 AI 사용법" />
+              <PrinciplesPanel
+                principles={spec.principles}
+                aiUsage={spec.aiUsage}
+              />
+            </section>
+          </>
+        ) : null}
+
+        <div className="mt-16 grid gap-12 border-t border-line pt-14 lg:grid-cols-[1fr_320px]">
           <article className="reader max-w-reader">
             {Body ? (
               <Body />
             ) : (
-              <p className="text-ink-mute">분석 본문이 아직 준비되지 않았습니다.</p>
+              <p className="text-ink-mute">
+                분석 본문이 아직 준비되지 않았습니다.
+              </p>
             )}
           </article>
 
@@ -122,25 +186,30 @@ export default async function AnalysisPage({
           </aside>
         </div>
 
-        <section className="mt-16">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-pill bg-pop" aria-hidden />
-            <h2 className="eyebrow text-ink-faint">산출물 · DESIGN.md</h2>
-          </div>
-          <h3 className="mt-2 text-[22px] font-bold tracking-tight text-ink">
-            이 분석을 AI 코딩 에이전트에게 넘기기
-          </h3>
-          <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-ink-mute">
-            아래 DESIGN.md를 다운로드해 프로젝트 루트에 두고 Claude Code·Cursor
-            같은 에이전트에게 가리키면, 이 디자인 언어로 UI를 만듭니다.{" "}
-            <Link href="/design-md" className="text-pop-ink hover:underline">
-              DESIGN.md란?
-            </Link>
-          </p>
-          <div className="mt-5">
-            <DesignMdViewer filename={analysis.designMd} content={designMd} />
-          </div>
-        </section>
+        {spec && designMd ? (
+          <section className="mt-16">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-pill bg-pop" aria-hidden />
+              <h2 className="eyebrow text-ink-faint">산출물 · DESIGN.md</h2>
+            </div>
+            <h3 className="mt-2 text-[22px] font-bold tracking-tight text-ink">
+              이 분석을 AI 코딩 에이전트에게 넘기기
+            </h3>
+            <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-ink-mute">
+              아래 DESIGN.md를 다운로드해 프로젝트 루트에 두고 Claude Code·Cursor
+              같은 에이전트에게 가리키면, 이 디자인 언어로 UI를 만듭니다.{" "}
+              <Link href="/design-md" className="text-pop-ink hover:underline">
+                DESIGN.md란?
+              </Link>
+            </p>
+            <div className="mt-5">
+              <DesignMdViewer
+                filename={analysis.designMd}
+                content={designMd}
+              />
+            </div>
+          </section>
+        ) : null}
 
         <div className="mt-12">
           <Link

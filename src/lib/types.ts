@@ -105,3 +105,76 @@ export const DIFFICULTY_LABEL: Record<Difficulty, string> = {
   core: "핵심",
   advanced: "심화",
 };
+
+// ── 디자인 분석 스펙 — analysis 노드의 구조화된 디자인 데이터(시각화 정본) ──
+
+/** 색 한 칸 — 토큰명·HEX·용도·칩 위 텍스트 대비색. */
+export interface ColorSwatch {
+  token: string;
+  hex: string;
+  note: string;
+  /** 칩 위 텍스트 대비색 — "#ffffff" 또는 "#16171D". */
+  on: string;
+}
+
+/** 색 그룹 — 브랜드·중립·의미. */
+export interface ColorGroup {
+  label: "Brand" | "Neutral" | "Semantic";
+  swatches: ColorSwatch[];
+}
+
+/** 타입 스케일 한 단계. size·weight는 범위 표기가 가능해 string. */
+export interface TypeStep {
+  label: string;
+  size: string;
+  weight: string;
+  /** 라이브 샘플 렌더용 대표 px 값. */
+  sampleSizePx: number;
+  note?: string;
+}
+
+/** 간격 스케일 — 베이스 단위와 단계 배열. */
+export interface SpacingSpec {
+  base: string;
+  scale: number[];
+  note?: string;
+}
+
+/** 반경 한 단계. */
+export interface RadiusStep {
+  name: string;
+  px: number;
+  note?: string;
+}
+
+/** 컴포넌트 명세 — 이름 목록과 설명. */
+export interface ComponentSpec {
+  items: string[];
+  note: string;
+}
+
+/** 분석 디자인 스펙 — design-md 헤딩 구조에 1:1 대응. design-md 마크다운의 정본. */
+export interface AnalysisDesignSpec {
+  /** AnalysisNode.slug와 일치. */
+  slug: string;
+  /** DESIGN.md 제목용 표시명 — 예: "Toss", "Gmarket (GDS)". */
+  name: string;
+  /** design-md 상단 blockquote 1줄 설명. */
+  summary: string;
+  /** "공개 화면 관찰 기반 학습용 근사치" 면책 문구. */
+  disclaimer: string;
+  /** Identity & Principles. */
+  principles: string[];
+  /** Color — Brand/Neutral/Semantic 그룹. */
+  colors: ColorGroup[];
+  font: string;
+  typeScale: TypeStep[];
+  /** line-height·word-break 등 부가 타이포 규칙. */
+  typographyNote?: string;
+  spacing: SpacingSpec;
+  radii: RadiusStep[];
+  elevationNote?: string;
+  components: ComponentSpec;
+  /** Usage for AI agents. */
+  aiUsage: string;
+}
