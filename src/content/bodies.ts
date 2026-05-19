@@ -12,6 +12,13 @@ import Components from "./concepts/components.mdx";
 import PatternsGuidelines from "./concepts/patterns-guidelines.mdx";
 import Accessibility from "./concepts/accessibility.mdx";
 
+import EmptyState from "./patterns/empty-state.mdx";
+import FormValidation from "./patterns/form-validation.mdx";
+import ModalDialog from "./patterns/modal-dialog.mdx";
+import CardGrid from "./patterns/card-grid.mdx";
+import DataTable from "./patterns/data-table.mdx";
+import NavigationBar from "./patterns/navigation-bar.mdx";
+
 import Toss from "./analyses/toss.mdx";
 import Krds from "./analyses/krds.mdx";
 import Gmarket from "./analyses/gmarket.mdx";
@@ -31,6 +38,15 @@ export const conceptBodies: Record<string, ComponentType> = {
   accessibility: Accessibility,
 };
 
+export const patternBodies: Record<string, ComponentType> = {
+  "empty-state": EmptyState,
+  "form-validation": FormValidation,
+  "modal-dialog": ModalDialog,
+  "card-grid": CardGrid,
+  "data-table": DataTable,
+  "navigation-bar": NavigationBar,
+};
+
 export const analysisBodies: Record<string, ComponentType> = {
   toss: Toss,
   krds: Krds,
@@ -41,6 +57,10 @@ export const analysisBodies: Record<string, ComponentType> = {
 
 export function getConceptBody(slug: string): ComponentType | undefined {
   return conceptBodies[slug];
+}
+
+export function getPatternBody(slug: string): ComponentType | undefined {
+  return patternBodies[slug];
 }
 
 export function getAnalysisBody(slug: string): ComponentType | undefined {

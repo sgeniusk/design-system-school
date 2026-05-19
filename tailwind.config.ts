@@ -4,7 +4,7 @@ import type { Config } from "tailwindcss";
  * Design System School — Tailwind 토큰 매핑.
  * 색·반경·그림자 원천은 globals.css의 CSS 변수이며, 여기서는 그 변수를
  * Tailwind 유틸리티로 노출한다. 노드 타입별 색: 개념=accent(indigo),
- * 분석=pop(coral), 학습경로=mint(teal).
+ * 패턴=gold(amber), 분석=pop(coral), 학습경로=mint(teal).
  */
 const config: Config = {
   content: ["./src/**/*.{ts,tsx,md,mdx}"],
@@ -39,6 +39,11 @@ const config: Config = {
           ink: "rgb(var(--mint-ink) / <alpha-value>)",
           soft: "rgb(var(--mint-soft) / <alpha-value>)",
         },
+        gold: {
+          DEFAULT: "rgb(var(--gold) / <alpha-value>)",
+          ink: "rgb(var(--gold-ink) / <alpha-value>)",
+          soft: "rgb(var(--gold-soft) / <alpha-value>)",
+        },
       },
       fontFamily: {
         sans: ["Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", "system-ui", "sans-serif"],
@@ -63,6 +68,7 @@ const config: Config = {
         lift: "0 24px 64px -28px rgba(22,23,29,0.32)",
         glow: "0 12px 40px -12px rgba(91,67,245,0.42)",
         "glow-pop": "0 12px 40px -12px rgba(255,92,56,0.42)",
+        "glow-gold": "0 12px 40px -12px rgba(224,154,22,0.42)",
       },
       fontSize: {
         eyebrow: ["12px", { lineHeight: "1.3", letterSpacing: "0.16em" }],

@@ -8,7 +8,7 @@ import { graphData, getGraphStats } from "@/lib/graph";
 export const metadata: Metadata = {
   title: "온톨로지 — 디자인 지식 그래프",
   description:
-    "위키의 개념, 컬렉션의 분석, 배우기의 경로가 어떻게 연결되는지 한눈에 보는 인터랙티브 지식 그래프.",
+    "위키의 개념과 패턴, 컬렉션의 분석, 배우기의 경로가 어떻게 연결되는지 한눈에 보는 인터랙티브 지식 그래프.",
 };
 
 export default function OntologyPage() {
@@ -19,13 +19,14 @@ export default function OntologyPage() {
       <PageHead
         eyebrow="Ontology"
         title="하나의 그래프로 보는 디자인 지식"
-        lede="위키의 개념, 컬렉션의 분석, 배우기의 경로 — 세 가지 콘텐츠는 사실 하나의 온톨로지입니다. 노드에 마우스를 올려 연결을 따라가 보세요."
+        lede="위키의 개념과 패턴, 컬렉션의 분석, 배우기의 경로 — 모든 콘텐츠는 사실 하나의 온톨로지입니다. 노드에 마우스를 올려 연결을 따라가 보세요."
       />
 
       <Container className="py-8">
         <dl className="flex flex-wrap gap-x-10 gap-y-4 rounded-xl border border-line bg-bg-soft/50 px-6 py-5">
           {[
             { k: "개념 노드", v: stats.concepts },
+            { k: "패턴 노드", v: stats.patterns },
             { k: "분석 노드", v: stats.analyses },
             { k: "학습 경로", v: stats.paths },
             { k: "고유 연결", v: stats.edges },

@@ -34,3 +34,7 @@ next-env.d.ts
 # agent tooling
 /.omc
 /.claude
+
+# multi-session work tracking (local only)
+/checklist.md
+/context-notes.md

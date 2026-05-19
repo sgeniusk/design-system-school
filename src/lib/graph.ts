@@ -1,9 +1,9 @@
 // 온톨로지를 그래프 뷰 전용 노드·엣지로 변환하고 결정론적 force 레이아웃 좌표를 계산한다.
 // node:fs 등 서버 전용 API를 쓰지 않으므로 서버·클라이언트 양쪽에서 import 안전.
-import { analyses, concepts } from "@/content/ontology";
+import { analyses, concepts, patterns } from "@/content/ontology";
 import { paths } from "@/content/paths";
 
-export type GraphNodeKind = "concept" | "analysis" | "path";
+export type GraphNodeKind = "concept" | "analysis" | "pattern" | "path";
 
 /** 그래프 뷰 노드 — 레이아웃 좌표(x,y)까지 포함한 시각화 전용 타입. */
 export interface GraphVizNode {
@@ -24,6 +24,8 @@ export interface GraphVizNode {
 export type GraphEdgeKind =
   | "concept-concept"
   | "analysis-concept"
+  | "pattern-concept"
+  | "pattern-pattern"
   | "path-concept";
 
 /** 무방향 엣지 — source/target은 GraphVizNode.id. */
@@ -68,7 +70,7 @@ interface Vec {
   y: number;
 }
 
-/** 온톨로지에서 노드 배열을 만든다. concept → analysis → path 순서 고정. */
+/** 온톨로지에서 노드 배열을 만든다. concept → pattern → analysis → path 순서 고정. */
 function buildNodes(): GraphVizNode[] {
   const nodes: GraphVizNode[] = [];
   for (const c of concepts) {
@@ -79,6 +81,19 @@ function buildNodes(): GraphVizNode[] {
       label: c.title,
       sublabel: c.titleEn,
       href: `/wiki/${c.slug}`,
+      degree: 0,
+      x: 0,
+      y: 0,
+    });
+  }
+  for (const p of patterns) {
+    nodes.push({
+      id: `pattern:${p.slug}`,
+      kind: "pattern",
+      slug: p.slug,
+      label: p.title,
+      sublabel: p.titleEn,
+      href: `/wiki/${p.slug}`,
       degree: 0,
       x: 0,
       y: 0,
@@ -130,6 +145,14 @@ function buildEdges(nodes: GraphVizNode[]): GraphEdge[] {
   for (const c of concepts) {
     for (const r of c.relatedConcepts) {
       add(`concept:${c.slug}`, `concept:${r}`, "concept-concept");
+    }
+  }
+  for (const p of patterns) {
+    for (const c of p.relatedConcepts) {
+      add(`pattern:${p.slug}`, `concept:${c}`, "pattern-concept");
+    }
+    for (const rp of p.relatedPatterns) {
+      add(`pattern:${p.slug}`, `pattern:${rp}`, "pattern-pattern");
     }
   }
   for (const a of analyses) {
@@ -278,6 +301,7 @@ export function getGraphStats() {
   return {
     nodes: nodes.length,
     concepts: nodes.filter((n) => n.kind === "concept").length,
+    patterns: nodes.filter((n) => n.kind === "pattern").length,
     analyses: nodes.filter((n) => n.kind === "analysis").length,
     paths: nodes.filter((n) => n.kind === "path").length,
     edges: edges.length,

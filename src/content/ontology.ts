@@ -1,6 +1,11 @@
 // 디자인 지식 그래프의 단일 진실 공급원.
 // 모든 개념·분석 노드와 그 관계(relatedConcepts, demonstrates)를 등록한다.
-import type { AnalysisNode, ConceptNode, GlobalReference } from "@/lib/types";
+import type {
+  AnalysisNode,
+  ConceptNode,
+  GlobalReference,
+  PatternNode,
+} from "@/lib/types";
 
 export const concepts: ConceptNode[] = [
   {
@@ -122,6 +127,93 @@ export const concepts: ConceptNode[] = [
     difficulty: "core",
     readingMinutes: 7,
     relatedConcepts: ["color", "patterns-guidelines", "visual-hierarchy"],
+  },
+];
+
+export const patterns: PatternNode[] = [
+  {
+    type: "pattern",
+    slug: "empty-state",
+    title: "빈 상태",
+    titleEn: "Empty State",
+    category: "feedback",
+    summary:
+      "보여줄 데이터가 없을 때의 화면. 빈 화면은 실수가 아니라 설계할 대상이다.",
+    problem: "데이터가 아직 없을 때, 화면을 어떻게 채워 다음 행동으로 이끌 것인가.",
+    difficulty: "core",
+    readingMinutes: 5,
+    relatedConcepts: ["visual-hierarchy", "typography"],
+    relatedPatterns: ["data-table"],
+  },
+  {
+    type: "pattern",
+    slug: "form-validation",
+    title: "폼 검증",
+    titleEn: "Form Validation",
+    category: "input",
+    summary:
+      "입력 오류를 언제·어디서·어떤 톤으로 알릴지에 대한 합의. 검증은 비난이 아니라 안내다.",
+    problem: "사용자 입력의 오류를 언제·어떻게 알려 좌절 없이 고치게 할 것인가.",
+    difficulty: "core",
+    readingMinutes: 6,
+    relatedConcepts: ["accessibility", "color", "visual-hierarchy"],
+    relatedPatterns: ["modal-dialog"],
+  },
+  {
+    type: "pattern",
+    slug: "modal-dialog",
+    title: "모달 다이얼로그",
+    titleEn: "Modal Dialog",
+    category: "disclosure",
+    summary:
+      "흐름을 멈추고 한 가지 결정에 집중시키는 겹화면. 강력한 만큼 아껴 써야 한다.",
+    problem: "다른 모든 것을 멈추고 한 가지에 집중시켜야 할 때 무엇을 지킬 것인가.",
+    difficulty: "core",
+    readingMinutes: 6,
+    relatedConcepts: ["components", "accessibility", "layout-grid"],
+    relatedPatterns: ["form-validation"],
+  },
+  {
+    type: "pattern",
+    slug: "card-grid",
+    title: "카드 그리드",
+    titleEn: "Card Grid",
+    category: "layout",
+    summary:
+      "비슷한 항목을 카드로 묶어 격자에 배열하는 법. 훑어보기와 비교를 돕는다.",
+    problem: "성격이 비슷한 항목 여러 개를 한눈에 훑어보게 하려면 어떻게 배열할까.",
+    difficulty: "core",
+    readingMinutes: 5,
+    relatedConcepts: ["layout-grid", "spacing", "components"],
+    relatedPatterns: ["data-table"],
+  },
+  {
+    type: "pattern",
+    slug: "data-table",
+    title: "데이터 테이블",
+    titleEn: "Data Table",
+    category: "layout",
+    summary:
+      "행과 열로 된 많은 데이터를 읽고 비교하게 하는 법. 정렬·밀도·정렬축이 핵심.",
+    problem: "행과 열로 된 많은 데이터를 빠르게 읽고 비교하게 하려면 무엇을 정할까.",
+    difficulty: "core",
+    readingMinutes: 6,
+    relatedConcepts: ["typography", "spacing", "visual-hierarchy"],
+    relatedPatterns: ["card-grid", "empty-state"],
+  },
+  {
+    type: "pattern",
+    slug: "navigation-bar",
+    title: "내비게이션 바",
+    titleEn: "Navigation Bar",
+    category: "navigation",
+    summary:
+      "사용자가 지금 어디에 있고 어디로 갈 수 있는지 보여주는 골격. 모든 화면의 닻.",
+    problem: "사용자가 현재 위치와 갈 수 있는 곳을 늘 알게 하려면 무엇을 보여줄까.",
+    difficulty: "core",
+    readingMinutes: 5,
+    relatedConcepts: ["components", "visual-hierarchy", "layout-grid"],
+    relatedPatterns: [],
   },
 ];
 

@@ -9,7 +9,7 @@
   Design System School — 디자인 토큰.
   색 토큰은 "R G B" 채널 형태로 저장한다. 그래야 Tailwind의 불투명도
   수정자(/85 등)가 rgb(var(--x) / <alpha>) 형태로 동작한다.
-  노드 색: 개념=accent(indigo), 분석=pop(coral), 학습경로=mint(teal).
+  노드 색: 개념=accent(indigo), 패턴=gold(amber), 분석=pop(coral), 학습경로=mint(teal).
 */
 :root {
   color-scheme: light;
@@ -43,6 +43,11 @@
   --mint: 15 181 166;
   --mint-ink: 10 134 120;
   --mint-soft: 219 246 242;
+
+  /* gold — amber (패턴/위키) */
+  --gold: 224 154 22;
+  --gold-ink: 161 106 8;
+  --gold-soft: 252 240 214;
 
   /* radius */
   --r-sm: 9px;

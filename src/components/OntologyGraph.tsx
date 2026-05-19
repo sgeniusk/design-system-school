@@ -15,6 +15,12 @@ const KIND_STYLE: Record<GraphNodeKind, KindStyle> = {
     soft: "rgb(var(--accent-soft))",
     label: "개념",
   },
+  pattern: {
+    dot: "bg-gold",
+    fill: "rgb(var(--gold))",
+    soft: "rgb(var(--gold-soft))",
+    label: "패턴",
+  },
   analysis: {
     dot: "bg-pop",
     fill: "rgb(var(--pop))",
@@ -29,7 +35,7 @@ const KIND_STYLE: Record<GraphNodeKind, KindStyle> = {
   },
 };
 
-const KIND_ORDER: GraphNodeKind[] = ["concept", "analysis", "path"];
+const KIND_ORDER: GraphNodeKind[] = ["concept", "pattern", "analysis", "path"];
 
 /** 긴 노드 제목을 그래프 라벨용으로 줄인다 — "토스 — Apps in Toss" → "토스". */
 function shortLabel(label: string): string {
@@ -51,6 +57,7 @@ export function OntologyGraph({
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [filter, setFilter] = useState<Record<GraphNodeKind, boolean>>({
     concept: true,
+    pattern: true,
     analysis: true,
     path: true,
   });
@@ -96,7 +103,9 @@ export function OntologyGraph({
     setFilter((prev) => {
       const next = { ...prev, [kind]: !prev[kind] };
       // 최소 한 종류는 항상 켜둔다.
-      if (!next.concept && !next.analysis && !next.path) return prev;
+      if (!next.concept && !next.pattern && !next.analysis && !next.path) {
+        return prev;
+      }
       return next;
     });
   };
@@ -141,7 +150,7 @@ export function OntologyGraph({
           viewBox={`0 0 ${GRAPH_VIEWBOX.width} ${GRAPH_VIEWBOX.height}`}
           className="block h-auto w-full"
           role="group"
-          aria-label="디자인 온톨로지 그래프 — 개념·분석·학습 경로 노드의 연결"
+          aria-label="디자인 온톨로지 그래프 — 개념·패턴·분석·학습 경로 노드의 연결"
         >
           {/* 엣지 */}
           <g>

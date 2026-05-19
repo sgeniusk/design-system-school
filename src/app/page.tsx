@@ -27,7 +27,7 @@ const LENSES = [
     href: "/wiki",
     eyebrow: "Wiki",
     title: "위키",
-    desc: "디자인 개념의 온톨로지. 모든 노드가 서로 링크되고 분석과 연결된다.",
+    desc: "디자인 개념과 UI 패턴의 온톨로지. 모든 노드가 서로 링크되고 분석과 연결된다.",
     soft: "rgb(var(--accent-soft))",
     ink: "rgb(var(--accent-ink))",
   },

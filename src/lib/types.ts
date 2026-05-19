@@ -1,6 +1,6 @@
 // 디자인 지식 그래프(온톨로지)의 노드·경로 스키마.
 
-export type NodeType = "concept" | "analysis";
+export type NodeType = "concept" | "analysis" | "pattern";
 
 export type ConceptCategory =
   | "foundation"
@@ -9,6 +9,14 @@ export type ConceptCategory =
   | "layout"
   | "system"
   | "accessibility";
+
+/** 패턴 노드의 분류 — 패턴이 푸는 문제의 종류. */
+export type PatternCategory =
+  | "navigation"
+  | "input"
+  | "feedback"
+  | "disclosure"
+  | "layout";
 
 export type Industry =
   | "fintech"
@@ -35,6 +43,24 @@ export interface ConceptNode {
   relatedConcepts: string[];
 }
 
+/** 패턴 노드 — 컴포넌트를 조합해 반복 문제를 푸는 재사용 가능한 UI 해법. */
+export interface PatternNode {
+  type: "pattern";
+  slug: string;
+  title: string;
+  titleEn: string;
+  category: PatternCategory;
+  summary: string;
+  /** 이 패턴이 푸는 문제 — 한 문장. */
+  problem: string;
+  difficulty: Difficulty;
+  readingMinutes: number;
+  /** 이 패턴이 기대는 개념 슬러그 — pattern→concept 엣지. */
+  relatedConcepts: string[];
+  /** 연관 패턴 슬러그 — pattern↔pattern 엣지. */
+  relatedPatterns: string[];
+}
+
 /** 분석 노드 — 성공한 디자인을 해부한 사례. */
 export interface AnalysisNode {
   type: "analysis";
@@ -56,7 +82,7 @@ export interface AnalysisNode {
   takeaway: string;
 }
 
-export type GraphNode = ConceptNode | AnalysisNode;
+export type GraphNode = ConceptNode | AnalysisNode | PatternNode;
 
 /** 학습 경로 — 개념 노드를 큐레이션한 순서. */
 export interface LearnPath {
@@ -98,6 +124,14 @@ export const CATEGORY_LABEL: Record<ConceptCategory, string> = {
   layout: "레이아웃",
   system: "시스템",
   accessibility: "접근성",
+};
+
+export const PATTERN_CATEGORY_LABEL: Record<PatternCategory, string> = {
+  navigation: "내비게이션",
+  input: "입력",
+  feedback: "피드백",
+  disclosure: "공개와 숨김",
+  layout: "레이아웃",
 };
 
 export const DIFFICULTY_LABEL: Record<Difficulty, string> = {

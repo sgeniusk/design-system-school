@@ -1,5 +1,5 @@
 // 온톨로지 노드 조회·역참조·경로 헬퍼.
-import { analyses, concepts, globalReferences } from "@/content/ontology";
+import { analyses, concepts, globalReferences, patterns } from "@/content/ontology";
 import { paths } from "@/content/paths";
 import { designSpecs } from "@/content/design-specs";
 import type {
@@ -7,6 +7,7 @@ import type {
   AnalysisNode,
   ConceptNode,
   LearnPath,
+  PatternNode,
 } from "@/lib/types";
 
 export function getConcepts(): ConceptNode[] {
@@ -23,6 +24,14 @@ export function getAnalyses(): AnalysisNode[] {
 
 export function getAnalysis(slug: string): AnalysisNode | undefined {
   return analyses.find((a) => a.slug === slug);
+}
+
+export function getPatterns(): PatternNode[] {
+  return patterns;
+}
+
+export function getPattern(slug: string): PatternNode | undefined {
+  return patterns.find((p) => p.slug === slug);
 }
 
 export function getPaths(): LearnPath[] {
@@ -49,6 +58,35 @@ export function getRelatedConcepts(slug: string): ConceptNode[] {
 /** 이 개념을 보여주는 분석 노드들 (analysis.demonstrates의 역참조). */
 export function getAnalysesForConcept(slug: string): AnalysisNode[] {
   return analyses.filter((a) => a.demonstrates.includes(slug));
+}
+
+/** 한 패턴이 기대는 개념 노드들. */
+export function getConceptsForPattern(slug: string): ConceptNode[] {
+  const pattern = getPattern(slug);
+  if (!pattern) return [];
+  return pattern.relatedConcepts
+    .map((s) => getConcept(s))
+    .filter((c): c is ConceptNode => Boolean(c));
+}
+
+/** 한 패턴의 연관 패턴 노드들. */
+export function getRelatedPatterns(slug: string): PatternNode[] {
+  const pattern = getPattern(slug);
+  if (!pattern) return [];
+  // 무방향: 내가 가리킨 패턴 + 나를 가리킨 패턴 모두 모아 중복 제거.
+  const slugs = new Set(pattern.relatedPatterns);
+  for (const p of patterns) {
+    if (p.relatedPatterns.includes(slug)) slugs.add(p.slug);
+  }
+  slugs.delete(slug);
+  return [...slugs]
+    .map((s) => getPattern(s))
+    .filter((p): p is PatternNode => Boolean(p));
+}
+
+/** 이 개념을 쓰는 패턴 노드들 (pattern.relatedConcepts의 역참조). */
+export function getPatternsForConcept(slug: string): PatternNode[] {
+  return patterns.filter((p) => p.relatedConcepts.includes(slug));
 }
 
 /** 한 분석이 보여주는 개념 노드들. */
@@ -79,14 +117,19 @@ export function getDesignSpec(slug: string): AnalysisDesignSpec | undefined {
   return designSpecs[slug];
 }
 
-/** 온톨로지 전체 통계. */
+/** 온톨로지 전체 통계. edges는 방향성 관계의 합 — 정확한 고유 엣지 수는 graph.ts의 getGraphStats. */
 export function getOntologyStats() {
   const edges =
     concepts.reduce((sum, c) => sum + c.relatedConcepts.length, 0) +
-    analyses.reduce((sum, a) => sum + a.demonstrates.length, 0);
+    analyses.reduce((sum, a) => sum + a.demonstrates.length, 0) +
+    patterns.reduce(
+      (sum, p) => sum + p.relatedConcepts.length + p.relatedPatterns.length,
+      0,
+    );
   return {
     concepts: concepts.length,
     analyses: analyses.length,
+    patterns: patterns.length,
     paths: paths.length,
     edges,
   };

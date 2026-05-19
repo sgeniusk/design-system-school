@@ -1,12 +1,13 @@
 // 온톨로지 상호 링크 — 노드 간 관계를 그룹별로 보여준다.
 import Link from "next/link";
 
-type Accent = "accent" | "pop" | "mint";
+type Accent = "accent" | "pop" | "mint" | "gold";
 
 const dot: Record<Accent, string> = {
   accent: "bg-accent",
   pop: "bg-pop",
   mint: "bg-mint",
+  gold: "bg-gold",
 };
 
 export interface NodeLinkItem {
