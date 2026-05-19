@@ -54,6 +54,7 @@ export function BrandMark({ size = 28 }: { size?: number }) {
 const navLinks = [
   { href: "/learn", label: "배우기" },
   { href: "/wiki", label: "위키" },
+  { href: "/ontology", label: "온톨로지" },
   { href: "/collection", label: "컬렉션" },
   { href: "/design-md", label: "DESIGN.md" },
 ];
@@ -116,6 +117,7 @@ export function SiteFooter() {
             links={[
               { href: "/learn", label: "배우기" },
               { href: "/wiki", label: "위키" },
+              { href: "/ontology", label: "온톨로지" },
               { href: "/collection", label: "컬렉션" },
               { href: "/design-md", label: "DESIGN.md란" },
             ]}
