@@ -11,7 +11,8 @@
   수정자(/85 등)가 rgb(var(--x) / <alpha>) 형태로 동작한다.
   노드 색: 개념=accent(indigo), 패턴=gold(amber), 분석=pop(coral), 학습경로=mint(teal).
 */
-:root {
+:root,
+:root[data-theme="light"] {
   color-scheme: light;
 
   /* surfaces */
@@ -55,6 +56,50 @@
   --r-lg: 20px;
 
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/*
+  다크 테마 — 같은 의미 토큰을 다른 값으로 갈아끼운다. 컴포넌트 코드는
+  토큰만 쓰므로 한 줄도 바꾸지 않고 라이트·다크가 동작한다.
+  [data-theme="dark"]는 layout의 사전 페인트 스크립트가 세팅한다.
+*/
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* surfaces */
+  --bg: 14 15 19;
+  --bg-soft: 22 23 29;
+  --surface: 28 29 36;
+
+  /* ink (text) */
+  --ink: 241 241 244;
+  --ink-soft: 200 201 211;
+  --ink-mute: 150 151 162;
+  --ink-faint: 108 109 122;
+
+  /* borders */
+  --border: 42 43 52;
+  --border-strong: 64 65 76;
+
+  /* accent — indigo (개념/위키) */
+  --accent: 124 102 255;
+  --accent-ink: 196 189 255;
+  --accent-soft: 41 34 78;
+
+  /* pop — coral (분석/컬렉션) */
+  --pop: 255 121 90;
+  --pop-ink: 255 184 168;
+  --pop-soft: 66 28 18;
+
+  /* mint — teal (학습 경로) */
+  --mint: 60 213 196;
+  --mint-ink: 144 232 220;
+  --mint-soft: 12 58 53;
+
+  /* gold — amber (패턴/위키) */
+  --gold: 234 184 70;
+  --gold-ink: 247 215 142;
+  --gold-soft: 64 44 8;
 }
 
 * {

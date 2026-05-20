@@ -1,6 +1,7 @@
 // 사이트 공통 셸 — Container, SiteHeader, SiteFooter.
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Container({
   children,
@@ -83,12 +84,15 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <Link
-          href="/learn"
-          className="rounded-pill bg-ink px-4 py-2 text-[13.5px] font-semibold text-bg transition-transform hover:-translate-y-0.5"
-        >
-          학습 시작
-        </Link>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Link
+            href="/learn"
+            className="rounded-pill bg-ink px-4 py-2 text-[13.5px] font-semibold text-bg transition-transform hover:-translate-y-0.5"
+          >
+            학습 시작
+          </Link>
+        </div>
       </Container>
     </header>
   );
