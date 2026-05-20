@@ -11,6 +11,17 @@ import VisualHierarchy from "./concepts/visual-hierarchy.mdx";
 import Components from "./concepts/components.mdx";
 import PatternsGuidelines from "./concepts/patterns-guidelines.mdx";
 import Accessibility from "./concepts/accessibility.mdx";
+import Motion from "./concepts/motion.mdx";
+import Affordance from "./concepts/affordance.mdx";
+import InteractionFeedback from "./concepts/interaction-feedback.mdx";
+import States from "./concepts/states.mdx";
+import InformationArchitecture from "./concepts/information-architecture.mdx";
+import ContentDesign from "./concepts/content-design.mdx";
+import Iconography from "./concepts/iconography.mdx";
+import Microcopy from "./concepts/microcopy.mdx";
+import ResponsiveDesign from "./concepts/responsive-design.mdx";
+import Theming from "./concepts/theming.mdx";
+import Performance from "./concepts/performance.mdx";
 
 import EmptyState from "./patterns/empty-state.mdx";
 import FormValidation from "./patterns/form-validation.mdx";
@@ -36,6 +47,17 @@ export const conceptBodies: Record<string, ComponentType> = {
   components: Components,
   "patterns-guidelines": PatternsGuidelines,
   accessibility: Accessibility,
+  motion: Motion,
+  affordance: Affordance,
+  "interaction-feedback": InteractionFeedback,
+  states: States,
+  "information-architecture": InformationArchitecture,
+  "content-design": ContentDesign,
+  iconography: Iconography,
+  microcopy: Microcopy,
+  "responsive-design": ResponsiveDesign,
+  theming: Theming,
+  performance: Performance,
 };
 
 export const patternBodies: Record<string, ComponentType> = {

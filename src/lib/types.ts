@@ -8,7 +8,10 @@ export type ConceptCategory =
   | "typography"
   | "layout"
   | "system"
-  | "accessibility";
+  | "accessibility"
+  | "behavior"
+  | "content"
+  | "engineering";
 
 /** 패턴 노드의 분류 — 패턴이 푸는 문제의 종류. */
 export type PatternCategory =
@@ -124,6 +127,9 @@ export const CATEGORY_LABEL: Record<ConceptCategory, string> = {
   layout: "레이아웃",
   system: "시스템",
   accessibility: "접근성",
+  behavior: "행동·인터랙션",
+  content: "정보구조·콘텐츠",
+  engineering: "기술·구현",
 };
 
 export const PATTERN_CATEGORY_LABEL: Record<PatternCategory, string> = {

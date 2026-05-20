@@ -19,6 +19,9 @@ const CATEGORY_ORDER: ConceptCategory[] = [
   "color",
   "typography",
   "layout",
+  "behavior",
+  "content",
+  "engineering",
   "accessibility",
 ];
 

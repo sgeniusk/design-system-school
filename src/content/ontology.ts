@@ -30,7 +30,7 @@ export const concepts: ConceptNode[] = [
       "색·간격·반경 같은 디자인 결정을 이름 붙은 변수로 저장한 것. 디자인과 코드를 잇는 가장 작은 단위.",
     difficulty: "core",
     readingMinutes: 7,
-    relatedConcepts: ["design-system", "color", "spacing"],
+    relatedConcepts: ["design-system", "color", "spacing", "theming"],
   },
   {
     type: "concept",
@@ -54,7 +54,7 @@ export const concepts: ConceptNode[] = [
       "타입 스케일, 위계, 한국어 본문의 가독성. 화면의 90%는 글자다.",
     difficulty: "intro",
     readingMinutes: 7,
-    relatedConcepts: ["visual-hierarchy", "spacing", "design-tokens"],
+    relatedConcepts: ["visual-hierarchy", "spacing", "design-tokens", "content-design"],
   },
   {
     type: "concept",
@@ -78,7 +78,7 @@ export const concepts: ConceptNode[] = [
       "그리드·정렬·반응형. 화면을 예측 가능한 골격 위에 올리는 법.",
     difficulty: "core",
     readingMinutes: 7,
-    relatedConcepts: ["spacing", "visual-hierarchy", "components"],
+    relatedConcepts: ["spacing", "visual-hierarchy", "components", "responsive-design"],
   },
   {
     type: "concept",
@@ -90,7 +90,7 @@ export const concepts: ConceptNode[] = [
       "크기·색·여백·대비로 '먼저 볼 것'을 정하는 일. 모든 디자인 결정의 목적지.",
     difficulty: "intro",
     readingMinutes: 6,
-    relatedConcepts: ["color", "typography", "spacing"],
+    relatedConcepts: ["color", "typography", "spacing", "motion"],
   },
   {
     type: "concept",
@@ -102,7 +102,7 @@ export const concepts: ConceptNode[] = [
       "버튼·입력창처럼 재사용하는 UI 조각. 상태(state)와 변형(variant)으로 설계한다.",
     difficulty: "core",
     readingMinutes: 7,
-    relatedConcepts: ["design-system", "patterns-guidelines", "layout-grid"],
+    relatedConcepts: ["design-system", "patterns-guidelines", "layout-grid", "states"],
   },
   {
     type: "concept",
@@ -126,7 +126,145 @@ export const concepts: ConceptNode[] = [
       "명도 대비, 키보드, 스크린리더, 터치 타깃. 모두가 쓸 수 있어야 좋은 디자인이다.",
     difficulty: "core",
     readingMinutes: 7,
-    relatedConcepts: ["color", "patterns-guidelines", "visual-hierarchy"],
+    relatedConcepts: ["color", "patterns-guidelines", "visual-hierarchy", "states"],
+  },
+
+  // ── 행동·인터랙션 ──
+  {
+    type: "concept",
+    slug: "motion",
+    title: "모션",
+    titleEn: "Motion",
+    category: "behavior",
+    summary:
+      "장식이 아니라 기능. 좋은 모션은 시선을 안내하고, 변화의 인과를 설명하고, 화면 사이를 부드럽게 잇는다.",
+    difficulty: "core",
+    readingMinutes: 6,
+    relatedConcepts: ["visual-hierarchy", "components", "accessibility"],
+  },
+  {
+    type: "concept",
+    slug: "affordance",
+    title: "어포던스",
+    titleEn: "Affordance",
+    category: "behavior",
+    summary:
+      "이걸 누를 수 있다, 끌 수 있다, 입력할 수 있다 — 모양만으로 사용법을 알리는 신호.",
+    difficulty: "core",
+    readingMinutes: 6,
+    relatedConcepts: ["components", "visual-hierarchy", "accessibility"],
+  },
+  {
+    type: "concept",
+    slug: "interaction-feedback",
+    title: "인터랙션 피드백",
+    titleEn: "Interaction Feedback",
+    category: "behavior",
+    summary:
+      "사용자가 한 행동에 시스템이 즉시 응답한다는 신호. 누른 듯한 눌림, 저장된 듯한 표시.",
+    difficulty: "core",
+    readingMinutes: 6,
+    relatedConcepts: ["motion", "states", "accessibility"],
+  },
+  {
+    type: "concept",
+    slug: "states",
+    title: "UI 상태",
+    titleEn: "UI States",
+    category: "behavior",
+    summary:
+      "기본·호버·포커스·눌림·비활성·로딩·오류. 한 컴포넌트의 일생을 모두 설계해야 화면이 깨지지 않는다.",
+    difficulty: "core",
+    readingMinutes: 6,
+    relatedConcepts: ["components", "accessibility", "visual-hierarchy"],
+  },
+
+  // ── 정보구조·콘텐츠 ──
+  {
+    type: "concept",
+    slug: "information-architecture",
+    title: "정보구조",
+    titleEn: "Information Architecture",
+    category: "content",
+    summary:
+      "무엇을 어디에 둘 것인가. 메뉴·페이지·라벨의 골격을 정해 사용자가 길을 잃지 않게 한다.",
+    difficulty: "core",
+    readingMinutes: 7,
+    relatedConcepts: ["visual-hierarchy", "layout-grid"],
+  },
+  {
+    type: "concept",
+    slug: "content-design",
+    title: "콘텐츠 디자인",
+    titleEn: "Content Design",
+    category: "content",
+    summary:
+      "화면의 글을 디자인 결정으로 다루는 일. 문장의 길이·순서·톤이 곧 화면의 구조다.",
+    difficulty: "core",
+    readingMinutes: 6,
+    relatedConcepts: ["typography", "microcopy", "visual-hierarchy"],
+  },
+  {
+    type: "concept",
+    slug: "iconography",
+    title: "아이콘그래피",
+    titleEn: "Iconography",
+    category: "content",
+    summary:
+      "아이콘은 그림이 아니라 약자다. 일관된 기하·획·여백의 규칙 위에서만 작동한다.",
+    difficulty: "core",
+    readingMinutes: 5,
+    relatedConcepts: ["components", "visual-hierarchy", "accessibility"],
+  },
+  {
+    type: "concept",
+    slug: "microcopy",
+    title: "마이크로카피",
+    titleEn: "Microcopy",
+    category: "content",
+    summary:
+      "버튼 라벨, 빈 상태 문구, 오류 메시지. 가장 작은 글이 가장 자주 읽히고 가장 자주 망친다.",
+    difficulty: "core",
+    readingMinutes: 5,
+    relatedConcepts: ["content-design", "typography", "accessibility"],
+  },
+
+  // ── 기술·구현 ──
+  {
+    type: "concept",
+    slug: "responsive-design",
+    title: "반응형 디자인",
+    titleEn: "Responsive Design",
+    category: "engineering",
+    summary:
+      "한 화면이 여러 너비에서 살아남는 법. 브레이크포인트·유체 그리드·콘텐츠 우선순위의 합.",
+    difficulty: "core",
+    readingMinutes: 6,
+    relatedConcepts: ["layout-grid", "spacing", "typography"],
+  },
+  {
+    type: "concept",
+    slug: "theming",
+    title: "테마와 다크모드",
+    titleEn: "Theming",
+    category: "engineering",
+    summary:
+      "같은 시스템을 라이트·다크·브랜드별로 갈아끼우는 법. 토큰이 그 시작이자 끝이다.",
+    difficulty: "core",
+    readingMinutes: 6,
+    relatedConcepts: ["design-tokens", "color", "accessibility"],
+  },
+  {
+    type: "concept",
+    slug: "performance",
+    title: "성능과 인지된 속도",
+    titleEn: "Performance",
+    category: "engineering",
+    summary:
+      "실제 빠르기와 빠르게 느껴지기는 다른 디자인 문제다. 스켈레톤·낙관적 업데이트·모션이 후자의 도구다.",
+    difficulty: "advanced",
+    readingMinutes: 6,
+    relatedConcepts: ["motion", "visual-hierarchy"],
   },
 ];
 
@@ -142,7 +280,7 @@ export const patterns: PatternNode[] = [
     problem: "데이터가 아직 없을 때, 화면을 어떻게 채워 다음 행동으로 이끌 것인가.",
     difficulty: "core",
     readingMinutes: 5,
-    relatedConcepts: ["visual-hierarchy", "typography"],
+    relatedConcepts: ["visual-hierarchy", "typography", "microcopy"],
     relatedPatterns: ["data-table"],
   },
   {
@@ -156,7 +294,7 @@ export const patterns: PatternNode[] = [
     problem: "사용자 입력의 오류를 언제·어떻게 알려 좌절 없이 고치게 할 것인가.",
     difficulty: "core",
     readingMinutes: 6,
-    relatedConcepts: ["accessibility", "color", "visual-hierarchy"],
+    relatedConcepts: ["accessibility", "color", "visual-hierarchy", "microcopy"],
     relatedPatterns: ["modal-dialog"],
   },
   {
@@ -170,7 +308,7 @@ export const patterns: PatternNode[] = [
     problem: "다른 모든 것을 멈추고 한 가지에 집중시켜야 할 때 무엇을 지킬 것인가.",
     difficulty: "core",
     readingMinutes: 6,
-    relatedConcepts: ["components", "accessibility", "layout-grid"],
+    relatedConcepts: ["components", "accessibility", "layout-grid", "motion", "states"],
     relatedPatterns: ["form-validation"],
   },
   {
@@ -184,7 +322,7 @@ export const patterns: PatternNode[] = [
     problem: "성격이 비슷한 항목 여러 개를 한눈에 훑어보게 하려면 어떻게 배열할까.",
     difficulty: "core",
     readingMinutes: 5,
-    relatedConcepts: ["layout-grid", "spacing", "components"],
+    relatedConcepts: ["layout-grid", "spacing", "components", "responsive-design"],
     relatedPatterns: ["data-table"],
   },
   {
@@ -198,7 +336,7 @@ export const patterns: PatternNode[] = [
     problem: "행과 열로 된 많은 데이터를 빠르게 읽고 비교하게 하려면 무엇을 정할까.",
     difficulty: "core",
     readingMinutes: 6,
-    relatedConcepts: ["typography", "spacing", "visual-hierarchy"],
+    relatedConcepts: ["typography", "spacing", "visual-hierarchy", "responsive-design"],
     relatedPatterns: ["card-grid", "empty-state"],
   },
   {
@@ -212,7 +350,7 @@ export const patterns: PatternNode[] = [
     problem: "사용자가 현재 위치와 갈 수 있는 곳을 늘 알게 하려면 무엇을 보여줄까.",
     difficulty: "core",
     readingMinutes: 5,
-    relatedConcepts: ["components", "visual-hierarchy", "layout-grid"],
+    relatedConcepts: ["components", "visual-hierarchy", "layout-grid", "information-architecture"],
     relatedPatterns: [],
   },
 ];
