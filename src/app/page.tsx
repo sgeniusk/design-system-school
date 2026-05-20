@@ -4,7 +4,8 @@ import { Container } from "@/components/Layout";
 import { Section, SectionHeading } from "@/components/Section";
 import { TokenDemo } from "@/components/TokenDemo";
 import { AnalysisCard } from "@/components/AnalysisCard";
-import { getAnalyses } from "@/lib/content";
+import { PatternCard } from "@/components/PatternCard";
+import { getAnalyses, getPattern } from "@/lib/content";
 
 const LAYERS = [
   { name: "원칙", en: "Principles", desc: "무엇을 중요하게 볼지에 대한 합의", w: "100%" },
@@ -41,8 +42,19 @@ const LENSES = [
   },
 ];
 
+// 홈에서 미리 노출할 대표 패턴 슬러그 — 5개 카테고리를 가능한 한 골고루 보여준다.
+const FEATURED_PATTERN_SLUGS = [
+  "empty-state",
+  "modal-dialog",
+  "card-grid",
+  "navigation-bar",
+];
+
 export default function HomePage() {
   const analyses = getAnalyses();
+  const featuredPatterns = FEATURED_PATTERN_SLUGS.map((s) => getPattern(s)).filter(
+    (p): p is NonNullable<typeof p> => Boolean(p),
+  );
 
   return (
     <>
@@ -149,6 +161,29 @@ export default function HomePage() {
           탭을 눌러 색·타이포·여백·반경 토큰을 살펴보세요. 색은 클릭하면 HEX가
           복사됩니다.
         </p>
+      </Section>
+
+      {/* 패턴 미리보기 */}
+      <Section>
+        <div className="flex items-end justify-between gap-4">
+          <SectionHeading
+            eyebrow="Patterns"
+            title="이론을 화면으로 잇는 UI 패턴"
+            lede="개념이 이론이라면, 패턴은 컴포넌트를 조합해 반복 문제를 푸는 재사용 해법입니다. 빈 상태·모달·카드 그리드처럼, 모든 제품이 마주치는 친구들."
+            accent="gold"
+          />
+          <Link
+            href="/wiki"
+            className="mb-10 hidden shrink-0 font-mono text-[13.5px] font-medium text-gold-ink hover:underline sm:inline"
+          >
+            전체 패턴 보기 →
+          </Link>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {featuredPatterns.map((p) => (
+            <PatternCard key={p.slug} pattern={p} />
+          ))}
+        </div>
       </Section>
 
       {/* 컬렉션 미리보기 */}

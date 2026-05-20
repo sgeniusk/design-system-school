@@ -18,7 +18,7 @@ export function Container({
 
 /**
  * 별자리 로고 — 디자인 지식 그래프(온톨로지)를 직역한 마크.
- * 노드 색이 의미를 담는다: 인디고=개념, 코랄=분석.
+ * 노드 색이 의미를 담는다: 인디고=개념, 앰버=패턴, 코랄=분석.
  */
 export function BrandMark({ size = 28 }: { size?: number }) {
   return (
@@ -45,7 +45,7 @@ export function BrandMark({ size = 28 }: { size?: number }) {
       <circle cx="15.5" cy="16.5" r="4" fill="#5B43F5" />
       <circle cx="8" cy="8.5" r="2.6" fill="#5B43F5" />
       <circle cx="24.5" cy="23" r="2.6" fill="#5B43F5" />
-      <circle cx="23.5" cy="7" r="2.6" fill="#FF5C38" />
+      <circle cx="23.5" cy="7" r="2.6" fill="#E09A16" />
       <circle cx="8.5" cy="24.5" r="2.6" fill="#FF5C38" />
     </svg>
   );
@@ -98,7 +98,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-28 border-t border-line bg-bg-soft/60">
       <Container className="py-14">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2.5">
               <BrandMark size={24} />
@@ -123,12 +123,24 @@ export function SiteFooter() {
             ]}
           />
           <FooterCol
+            title="패턴"
+            links={[
+              { href: "/wiki/empty-state", label: "빈 상태" },
+              { href: "/wiki/form-validation", label: "폼 검증" },
+              { href: "/wiki/modal-dialog", label: "모달 다이얼로그" },
+              { href: "/wiki/card-grid", label: "카드 그리드" },
+              { href: "/wiki/data-table", label: "데이터 테이블" },
+              { href: "/wiki/navigation-bar", label: "내비게이션 바" },
+            ]}
+          />
+          <FooterCol
             title="레퍼런스"
             links={[
               { href: "/collection/toss", label: "토스" },
               { href: "/collection/krds", label: "KRDS" },
               { href: "/collection/gmarket", label: "G마켓" },
               { href: "/collection/wanted", label: "원티드" },
+              { href: "/collection/letters", label: "Letters" },
             ]}
           />
         </div>

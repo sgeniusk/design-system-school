@@ -2,12 +2,13 @@
 import type { ReactNode } from "react";
 import { Container } from "@/components/Layout";
 
-type Accent = "accent" | "pop" | "mint";
+type Accent = "accent" | "pop" | "mint" | "gold";
 
 const accentText: Record<Accent, string> = {
   accent: "text-accent-ink",
   pop: "text-pop-ink",
   mint: "text-mint-ink",
+  gold: "text-gold-ink",
 };
 
 /** 라우트 상단 헤더 — eyebrow + 큰 제목 + 설명. */
