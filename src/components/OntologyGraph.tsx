@@ -1,6 +1,7 @@
 "use client";
-// 디자인 온톨로지를 SVG 그래프로 렌더하고 호버 강조·클릭 이동·타입 필터를 처리하는 컴포넌트.
-import { useMemo, useState } from "react";
+// 디자인 온톨로지를 SVG 그래프로 렌더하고 호버·터치·필터·키보드를 처리하는 컴포넌트.
+// 좁은 화면에서는 라벨·노드 크기를 키우고, 터치 디바이스에서는 두 번 탭 패턴을 쓴다.
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { GRAPH_VIEWBOX } from "@/lib/graph";
@@ -42,8 +43,11 @@ function shortLabel(label: string): string {
   return label.split(" — ")[0].trim();
 }
 
-function nodeRadius(degree: number): number {
-  return 13 + Math.min(degree, 8) * 1.6;
+/** 노드 반지름 — degree와 화면 폭에 따라 결정. 좁은 화면은 더 크게. */
+function nodeRadius(degree: number, compact: boolean): number {
+  const base = compact ? 16 : 13;
+  const step = compact ? 1.9 : 1.6;
+  return base + Math.min(degree, 8) * step;
 }
 
 export function OntologyGraph({
@@ -55,12 +59,36 @@ export function OntologyGraph({
 }) {
   const router = useRouter();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  // 터치 디바이스 두 번 탭 패턴 — 첫 탭에서 armed, 두 번째 탭에서 이동.
+  const [armedId, setArmedId] = useState<string | null>(null);
+  // 터치 디바이스(호버 미지원) 감지.
+  const [hoverless, setHoverless] = useState(false);
+  // 좁은 화면 감지 — 폰트·노드 크기를 키운다.
+  const [compact, setCompact] = useState(false);
   const [filter, setFilter] = useState<Record<GraphNodeKind, boolean>>({
     concept: true,
     pattern: true,
     analysis: true,
     path: true,
   });
+
+  useEffect(() => {
+    const hoverMq = window.matchMedia("(hover: none)");
+    const compactMq = window.matchMedia("(max-width: 640px)");
+
+    const sync = () => {
+      setHoverless(hoverMq.matches);
+      setCompact(compactMq.matches);
+    };
+    sync();
+
+    hoverMq.addEventListener("change", sync);
+    compactMq.addEventListener("change", sync);
+    return () => {
+      hoverMq.removeEventListener("change", sync);
+      compactMq.removeEventListener("change", sync);
+    };
+  }, []);
 
   const nodeById = useMemo(
     () => new Map(nodes.map((n) => [n.id, n])),
@@ -110,7 +138,21 @@ export function OntologyGraph({
     });
   };
 
-  const go = (node: GraphVizNode) => router.push(node.href);
+  const armedNode = armedId ? nodeById.get(armedId) : null;
+
+  const go = (node: GraphVizNode) => {
+    if (hoverless && armedId !== node.id) {
+      // 터치 디바이스 — 첫 탭은 hover armed만, 두 번째 탭에서 이동.
+      setArmedId(node.id);
+      setHoveredId(node.id);
+      return;
+    }
+    setArmedId(null);
+    router.push(node.href);
+  };
+
+  const fontSize = compact ? 17 : 13;
+  const labelOffset = compact ? 19 : 15;
 
   return (
     <figure className="m-0">
@@ -141,7 +183,11 @@ export function OntologyGraph({
           );
         })}
         <span className="ml-1 text-[12.5px] text-ink-faint">
-          노드를 가리키면 연결이 드러납니다. 클릭하면 해당 문서로 이동합니다.
+          {armedNode
+            ? `${shortLabel(armedNode.label)} — 다시 탭하면 페이지로 이동합니다.`
+            : hoverless
+              ? "노드를 탭하면 연결이 드러나고, 한 번 더 탭하면 이동합니다."
+              : "노드를 가리키면 연결이 드러납니다. 클릭하면 해당 문서로 이동합니다."}
         </span>
       </div>
 
@@ -184,10 +230,11 @@ export function OntologyGraph({
           <g>
             {visibleNodes.map((node) => {
               const style = KIND_STYLE[node.kind];
-              const r = nodeRadius(node.degree);
+              const r = nodeRadius(node.degree, compact);
               const dimmed =
                 activeIds !== null && !activeIds.has(node.id);
               const focused = hoveredId === node.id;
+              const armed = armedId === node.id;
               return (
                 <g
                   key={node.id}
@@ -203,7 +250,8 @@ export function OntologyGraph({
                   onKeyDown={(ev) => {
                     if (ev.key === "Enter" || ev.key === " ") {
                       ev.preventDefault();
-                      go(node);
+                      // 키보드는 호버 모델과 무관하게 즉시 이동.
+                      router.push(node.href);
                     }
                   }}
                   onMouseEnter={() => setHoveredId(node.id)}
@@ -216,16 +264,22 @@ export function OntologyGraph({
                     cy={node.y}
                     r={r}
                     fill={style.fill}
-                    stroke={focused ? "rgb(var(--ink))" : style.soft}
-                    strokeWidth={focused ? 3 : 2}
+                    stroke={
+                      armed
+                        ? "rgb(var(--accent))"
+                        : focused
+                          ? "rgb(var(--ink))"
+                          : style.soft
+                    }
+                    strokeWidth={armed ? 4 : focused ? 3 : 2}
                   />
                   <text
                     x={node.x}
-                    y={node.y + r + 15}
+                    y={node.y + r + labelOffset}
                     textAnchor="middle"
                     className="select-none font-semibold"
                     style={{
-                      fontSize: "13px",
+                      fontSize: `${fontSize}px`,
                       fill: "rgb(var(--ink))",
                       stroke: "rgb(var(--bg))",
                       strokeWidth: 3,
@@ -234,6 +288,23 @@ export function OntologyGraph({
                   >
                     {shortLabel(node.label)}
                   </text>
+                  {armed ? (
+                    <text
+                      x={node.x}
+                      y={node.y + r + labelOffset + fontSize + 2}
+                      textAnchor="middle"
+                      className="select-none"
+                      style={{
+                        fontSize: `${fontSize - 2}px`,
+                        fill: "rgb(var(--accent-ink))",
+                        stroke: "rgb(var(--bg))",
+                        strokeWidth: 3,
+                        paintOrder: "stroke",
+                      }}
+                    >
+                      탭하면 이동 →
+                    </text>
+                  ) : null}
                 </g>
               );
             })}
