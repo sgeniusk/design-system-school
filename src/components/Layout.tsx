@@ -60,6 +60,33 @@ const navLinks = [
   { href: "/design-md", label: "DESIGN.md" },
 ];
 
+/** 형제 사이트 — 헤더·푸터에서 외부 링크로 노출. */
+const SIBLING_SITE = {
+  url: "https://ai-builder-school-2.vercel.app/",
+  name: "AI Builder School",
+};
+
+/** 외부 링크용 미니 아이콘 — ↗ 모양의 외부 화살표. */
+function ExternalArrowIcon({ size = 14 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M9 3h4v4" />
+      <path d="M13 3l-6.5 6.5" />
+      <path d="M11 9v3.5a1.5 1.5 0 01-1.5 1.5h-6A1.5 1.5 0 012 12.5v-6A1.5 1.5 0 013.5 5H7" />
+    </svg>
+  );
+}
+
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-line/80 bg-bg/85 backdrop-blur-md">
@@ -86,6 +113,17 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />
+          <a
+            href={SIBLING_SITE.url}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${SIBLING_SITE.name} (외부 사이트, 새 탭에서 열림)`}
+            title={SIBLING_SITE.name}
+            className="flex items-center gap-1.5 rounded-pill px-3 py-2 text-[13px] font-medium text-ink-mute transition-colors hover:bg-bg-soft hover:text-ink"
+          >
+            <span className="hidden md:inline">{SIBLING_SITE.name}</span>
+            <ExternalArrowIcon />
+          </a>
           <Link
             href="/learn"
             className="rounded-pill bg-ink px-4 py-2 text-[13.5px] font-semibold text-bg transition-transform hover:-translate-y-0.5"
@@ -115,6 +153,15 @@ export function SiteFooter() {
               에이전트가 쓰는 DESIGN.md로 남기는 온톨로지 기반 디자인 지식
               플랫폼. AI Builder School의 형제 사이트.
             </p>
+            <a
+              href={SIBLING_SITE.url}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-pill border border-line bg-surface px-3.5 py-1.5 text-[12.5px] font-medium text-ink-mute transition-colors hover:border-ink-mute hover:text-ink"
+            >
+              {SIBLING_SITE.name} 방문
+              <ExternalArrowIcon size={12} />
+            </a>
           </div>
           <FooterCol
             title="둘러보기"
