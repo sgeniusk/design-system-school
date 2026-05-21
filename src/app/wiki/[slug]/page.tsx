@@ -17,6 +17,7 @@ import {
   getConcepts,
   getConceptsForPattern,
   getPathsForConcept,
+  getPathsForPattern,
   getPattern,
   getPatterns,
   getPatternsForConcept,
@@ -131,6 +132,7 @@ function PatternView({ slug }: { slug: string }) {
   const concepts = getConceptsForPattern(slug);
   const relatedPatterns = getRelatedPatterns(slug);
   const analyses = getAnalysesForPattern(slug);
+  const paths = getPathsForPattern(slug);
 
   const groups: NodeLinkGroup[] = [
     {
@@ -162,6 +164,12 @@ function PatternView({ slug }: { slug: string }) {
         sub: a.org,
       })),
       emptyText: "아직 연결된 분석이 없습니다.",
+    },
+    {
+      label: "이 패턴이 포함된 학습 경로",
+      accent: "mint",
+      items: paths.map((p) => ({ href: `/learn/${p.slug}`, title: p.title })),
+      emptyText: "포함된 경로가 없습니다.",
     },
   ];
 

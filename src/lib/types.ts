@@ -89,15 +89,21 @@ export interface AnalysisNode {
 
 export type GraphNode = ConceptNode | AnalysisNode | PatternNode;
 
-/** 학습 경로 — 개념 노드를 큐레이션한 순서. */
+/** 학습 경로의 한 단계 — concept 또는 pattern 노드를 가리킨다. */
+export interface LearnPathStep {
+  type: "concept" | "pattern";
+  slug: string;
+}
+
+/** 학습 경로 — 개념·패턴 노드를 큐레이션한 순서. */
 export interface LearnPath {
   slug: string;
   title: string;
   tagline: string;
   description: string;
   level: "intro" | "core";
-  /** 순서가 있는 개념 슬러그 목록. */
-  conceptSlugs: string[];
+  /** 학습 단계 — concept과 pattern을 섞을 수 있는 순서가 있는 시퀀스. */
+  steps: LearnPathStep[];
 }
 
 /** 글로벌 보너스 사례 — 가벼운 참고 카드. */

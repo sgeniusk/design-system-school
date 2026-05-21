@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/Layout";
 import { PageHead } from "@/components/Section";
-import { getPathConcepts, getPaths } from "@/lib/content";
+import { getPathSteps, getPaths } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "배우기 — 학습 경로",
@@ -27,7 +27,9 @@ export default function LearnPage() {
       <Container className="py-14">
         <div className="grid gap-6">
           {paths.map((path, i) => {
-            const concepts = getPathConcepts(path.slug);
+            const steps = getPathSteps(path.slug);
+            const conceptCount = steps.filter((s) => s.type === "concept").length;
+            const patternCount = steps.filter((s) => s.type === "pattern").length;
             return (
               <Link
                 key={path.slug}
@@ -53,24 +55,31 @@ export default function LearnPage() {
                     {path.description}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-1.5">
-                    {concepts.map((c, idx) => (
+                    {steps.map((step, idx) => (
                       <span
-                        key={c.slug}
-                        className="rounded-pill border border-line bg-bg-soft px-2.5 py-1 text-[12px] text-ink-soft"
+                        key={`${step.type}:${step.node.slug}`}
+                        className={`rounded-pill border px-2.5 py-1 text-[12px] ${
+                          step.type === "pattern"
+                            ? "border-gold/30 bg-gold-soft text-gold-ink"
+                            : "border-line bg-bg-soft text-ink-soft"
+                        }`}
                       >
                         <span className="font-mono text-ink-faint">
                           {idx + 1}
                         </span>{" "}
-                        {c.title}
+                        {step.node.title}
                       </span>
                     ))}
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-3 lg:flex-col lg:items-end">
                   <span className="font-mono text-[40px] font-bold leading-none text-mint">
-                    {concepts.length}
+                    {steps.length}
                   </span>
-                  <span className="text-[12px] text-ink-faint">개념</span>
+                  <span className="text-[12px] text-ink-faint">
+                    단계 · 개념 {conceptCount}
+                    {patternCount > 0 ? ` · 패턴 ${patternCount}` : ""}
+                  </span>
                   <span className="font-mono text-[14px] text-mint-ink transition-transform group-hover:translate-x-1">
                     경로 시작 →
                   </span>

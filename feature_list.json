@@ -187,20 +187,27 @@
       "id": "learn-path-with-patterns",
       "name": "Learn path includes patterns",
       "description": "LearnPath가 concept뿐 아니라 pattern도 큐레이션 단계에 포함할 수 있도록 스키마 확장.",
-      "status": "planned",
+      "status": "done",
       "dependencies": ["pattern-node-type"],
       "done_criteria": [
-        "LearnPath 스키마 확장 (steps에 type: 'concept' | 'pattern')",
-        "최소 한 개 경로에 pattern 단계 추가",
-        "/learn/[path] UI에 두 타입을 구분해 노출",
-        "graph.ts의 path-concept 엣지를 path-pattern까지 확장"
+        "LearnPath 스키마를 conceptSlugs → steps: { type: 'concept' | 'pattern', slug }[]로 완전 마이그레이션",
+        "build-a-system 경로에 패턴 3개 단계 추가 (empty-state·form-validation·card-grid)",
+        "lib/content.ts에 getPathSteps·getPathsForPattern 신규, getPathsForConcept 내부 갱신, 통계에 path-steps 포함",
+        "graph.ts의 GraphEdgeKind에 path-pattern 추가 + buildEdges에서 step.type 분기",
+        "/learn (목록)과 /learn/[path] (상세) 모두 concept/pattern 두 타입을 색 분기로 노출 (mint vs gold)",
+        "/wiki/[slug] PatternView에 mint dot '이 패턴이 포함된 학습 경로' 그룹 추가",
+        "npm run check 통과 (44 static pages, ontology 페이지 8.13→8.18kB)"
       ],
       "files": [
         "src/lib/types.ts",
         "src/content/paths.ts",
+        "src/lib/content.ts",
         "src/lib/graph.ts",
-        "src/app/learn/[path]/page.tsx"
-      ]
+        "src/app/learn/page.tsx",
+        "src/app/learn/[path]/page.tsx",
+        "src/app/wiki/[slug]/page.tsx"
+      ],
+      "evidence": "로컬 npm run check 통과. 커밋·라이브 확인 보류 — 사용자 명시 허가 대기."
     },
     {
       "id": "design-md-auto-extraction",

@@ -27,7 +27,8 @@ export type GraphEdgeKind =
   | "analysis-pattern"
   | "pattern-concept"
   | "pattern-pattern"
-  | "path-concept";
+  | "path-concept"
+  | "path-pattern";
 
 /** 무방향 엣지 — source/target은 GraphVizNode.id. */
 export interface GraphEdge {
@@ -165,8 +166,12 @@ function buildEdges(nodes: GraphVizNode[]): GraphEdge[] {
     }
   }
   for (const p of paths) {
-    for (const s of p.conceptSlugs) {
-      add(`path:${p.slug}`, `concept:${s}`, "path-concept");
+    for (const s of p.steps) {
+      if (s.type === "concept") {
+        add(`path:${p.slug}`, `concept:${s.slug}`, "path-concept");
+      } else {
+        add(`path:${p.slug}`, `pattern:${s.slug}`, "path-pattern");
+      }
     }
   }
   return edges;

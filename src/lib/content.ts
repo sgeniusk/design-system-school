@@ -112,18 +112,40 @@ export function getAnalysesForPattern(slug: string): AnalysisNode[] {
   return analyses.filter((a) => a.demonstratesPatterns?.includes(slug) ?? false);
 }
 
+/** 학습 단계 — UI에서 노드 정보와 함께 다루기 좋은 형태로 펼친 값. */
+export type LearnPathStepNode =
+  | { type: "concept"; node: ConceptNode }
+  | { type: "pattern"; node: PatternNode };
+
 /** 한 개념이 포함된 학습 경로들. */
 export function getPathsForConcept(slug: string): LearnPath[] {
-  return paths.filter((p) => p.conceptSlugs.includes(slug));
+  return paths.filter((p) =>
+    p.steps.some((s) => s.type === "concept" && s.slug === slug),
+  );
 }
 
-/** 경로 안에서 개념 노드를 순서대로. */
-export function getPathConcepts(pathSlug: string): ConceptNode[] {
+/** 한 패턴이 포함된 학습 경로들. */
+export function getPathsForPattern(slug: string): LearnPath[] {
+  return paths.filter((p) =>
+    p.steps.some((s) => s.type === "pattern" && s.slug === slug),
+  );
+}
+
+/** 경로 안의 단계를 순서대로 — concept·pattern 노드를 함께. */
+export function getPathSteps(pathSlug: string): LearnPathStepNode[] {
   const p = getPath(pathSlug);
   if (!p) return [];
-  return p.conceptSlugs
-    .map((s) => getConcept(s))
-    .filter((c): c is ConceptNode => Boolean(c));
+  const out: LearnPathStepNode[] = [];
+  for (const step of p.steps) {
+    if (step.type === "concept") {
+      const node = getConcept(step.slug);
+      if (node) out.push({ type: "concept", node });
+    } else {
+      const node = getPattern(step.slug);
+      if (node) out.push({ type: "pattern", node });
+    }
+  }
+  return out;
 }
 
 /** 한 분석의 디자인 스펙 — 시각화·DESIGN.md 생성의 정본. */
@@ -143,7 +165,8 @@ export function getOntologyStats() {
     patterns.reduce(
       (sum, p) => sum + p.relatedConcepts.length + p.relatedPatterns.length,
       0,
-    );
+    ) +
+    paths.reduce((sum, p) => sum + p.steps.length, 0);
   return {
     concepts: concepts.length,
     analyses: analyses.length,

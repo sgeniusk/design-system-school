@@ -6,8 +6,9 @@ import { PageHead } from "@/components/Section";
 import {
   CATEGORY_LABEL,
   DIFFICULTY_LABEL,
+  PATTERN_CATEGORY_LABEL,
 } from "@/lib/types";
-import { getPath, getPathConcepts, getPaths } from "@/lib/content";
+import { getPath, getPathSteps, getPaths } from "@/lib/content";
 
 export function generateStaticParams() {
   return getPaths().map((p) => ({ path: p.slug }));
@@ -35,7 +36,9 @@ export default async function LearnPathPage({
   const { path } = await params;
   const learnPath = getPath(path);
   if (!learnPath) notFound();
-  const concepts = getPathConcepts(path);
+  const steps = getPathSteps(path);
+  const conceptCount = steps.filter((s) => s.type === "concept").length;
+  const patternCount = steps.filter((s) => s.type === "pattern").length;
 
   return (
     <>
@@ -51,42 +54,69 @@ export default async function LearnPathPage({
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-pill bg-mint" aria-hidden />
             <h2 className="eyebrow text-ink-faint">
-              {concepts.length}개 개념 · 순서대로
+              {steps.length}개 단계 · 개념 {conceptCount}
+              {patternCount > 0 ? ` · 패턴 ${patternCount}` : ""} · 순서대로
             </h2>
           </div>
 
           <ol className="mt-6 grid gap-3">
-            {concepts.map((c, i) => (
-              <li key={c.slug}>
-                <Link
-                  href={`/wiki/${c.slug}`}
-                  className="group flex items-center gap-4 rounded-lg border border-line bg-surface p-4 transition-all hover:-translate-y-0.5 hover:border-mint/40 hover:shadow-soft"
-                >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-mint-soft font-mono text-[15px] font-bold text-mint-ink">
-                    {i + 1}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-[16px] font-bold text-ink">
-                        {c.title}
-                      </h3>
-                      <span className="rounded-pill bg-bg-soft px-2 py-0.5 text-[11px] text-ink-mute">
-                        {CATEGORY_LABEL[c.category]}
-                      </span>
+            {steps.map((step, i) => {
+              const isPattern = step.type === "pattern";
+              const node = step.node;
+              return (
+                <li key={`${step.type}:${node.slug}`}>
+                  <Link
+                    href={`/wiki/${node.slug}`}
+                    className={`group flex items-center gap-4 rounded-lg border border-line bg-surface p-4 transition-all hover:-translate-y-0.5 hover:shadow-soft ${
+                      isPattern
+                        ? "hover:border-gold/40"
+                        : "hover:border-mint/40"
+                    }`}
+                  >
+                    <span
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg font-mono text-[15px] font-bold ${
+                        isPattern
+                          ? "bg-gold-soft text-gold-ink"
+                          : "bg-mint-soft text-mint-ink"
+                      }`}
+                    >
+                      {i + 1}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-[16px] font-bold text-ink">
+                          {node.title}
+                        </h3>
+                        <span
+                          className={`rounded-pill px-2 py-0.5 text-[11px] ${
+                            isPattern
+                              ? "bg-gold-soft text-gold-ink"
+                              : "bg-bg-soft text-ink-mute"
+                          }`}
+                        >
+                          {step.type === "pattern"
+                            ? `패턴 · ${PATTERN_CATEGORY_LABEL[step.node.category]}`
+                            : CATEGORY_LABEL[step.node.category]}
+                        </span>
+                      </div>
+                      <p className="mt-0.5 truncate text-[13px] text-ink-mute">
+                        {node.summary}
+                      </p>
                     </div>
-                    <p className="mt-0.5 truncate text-[13px] text-ink-mute">
-                      {c.summary}
-                    </p>
-                  </div>
-                  <span className="hidden shrink-0 text-[12px] text-ink-faint sm:block">
-                    {DIFFICULTY_LABEL[c.difficulty]} · {c.readingMinutes}분
-                  </span>
-                  <span className="font-mono text-[14px] text-mint-ink transition-transform group-hover:translate-x-1">
-                    →
-                  </span>
-                </Link>
-              </li>
-            ))}
+                    <span className="hidden shrink-0 text-[12px] text-ink-faint sm:block">
+                      {DIFFICULTY_LABEL[node.difficulty]} · {node.readingMinutes}분
+                    </span>
+                    <span
+                      className={`font-mono text-[14px] transition-transform group-hover:translate-x-1 ${
+                        isPattern ? "text-gold-ink" : "text-mint-ink"
+                      }`}
+                    >
+                      →
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
           </ol>
 
           <div className="mt-10 rounded-xl border border-line bg-bg-soft/60 p-6 text-center">
