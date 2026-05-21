@@ -77,6 +77,8 @@ export interface AnalysisNode {
   url: string;
   /** 이 분석이 보여주는 개념 슬러그 — 분석→개념 엣지. */
   demonstrates: string[];
+  /** 이 분석이 보여주는 패턴 슬러그 — 분석→패턴 엣지. */
+  demonstratesPatterns?: string[];
   /** content/design-md 안의 파일명. */
   designMd: string;
   /** 대표 브랜드 색 (카드 액센트). */

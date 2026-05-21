@@ -24,6 +24,7 @@ export interface GraphVizNode {
 export type GraphEdgeKind =
   | "concept-concept"
   | "analysis-concept"
+  | "analysis-pattern"
   | "pattern-concept"
   | "pattern-pattern"
   | "path-concept";
@@ -158,6 +159,9 @@ function buildEdges(nodes: GraphVizNode[]): GraphEdge[] {
   for (const a of analyses) {
     for (const d of a.demonstrates) {
       add(`analysis:${a.slug}`, `concept:${d}`, "analysis-concept");
+    }
+    for (const dp of a.demonstratesPatterns ?? []) {
+      add(`analysis:${a.slug}`, `pattern:${dp}`, "analysis-pattern");
     }
   }
   for (const p of paths) {

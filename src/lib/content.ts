@@ -98,6 +98,20 @@ export function getConceptsForAnalysis(slug: string): ConceptNode[] {
     .filter((c): c is ConceptNode => Boolean(c));
 }
 
+/** 한 분석이 보여주는 패턴 노드들. */
+export function getPatternsForAnalysis(slug: string): PatternNode[] {
+  const analysis = getAnalysis(slug);
+  if (!analysis?.demonstratesPatterns) return [];
+  return analysis.demonstratesPatterns
+    .map((s) => getPattern(s))
+    .filter((p): p is PatternNode => Boolean(p));
+}
+
+/** 이 패턴을 보여주는 분석 노드들 (analysis.demonstratesPatterns의 역참조). */
+export function getAnalysesForPattern(slug: string): AnalysisNode[] {
+  return analyses.filter((a) => a.demonstratesPatterns?.includes(slug) ?? false);
+}
+
 /** 한 개념이 포함된 학습 경로들. */
 export function getPathsForConcept(slug: string): LearnPath[] {
   return paths.filter((p) => p.conceptSlugs.includes(slug));
@@ -121,7 +135,11 @@ export function getDesignSpec(slug: string): AnalysisDesignSpec | undefined {
 export function getOntologyStats() {
   const edges =
     concepts.reduce((sum, c) => sum + c.relatedConcepts.length, 0) +
-    analyses.reduce((sum, a) => sum + a.demonstrates.length, 0) +
+    analyses.reduce(
+      (sum, a) =>
+        sum + a.demonstrates.length + (a.demonstratesPatterns?.length ?? 0),
+      0,
+    ) +
     patterns.reduce(
       (sum, p) => sum + p.relatedConcepts.length + p.relatedPatterns.length,
       0,

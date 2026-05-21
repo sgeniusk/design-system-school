@@ -9,7 +9,7 @@
 
 ## Current Objective
 
-`feature_list.json` → `active_feature` = **`analysis-pattern-edges`** — analysis가 pattern도 demonstrate하도록 스키마·페이지 확장.
+`analysis-pattern-edges` 완료. `feature_list.json`의 `active_feature`는 비어 있다 (null). 다음 세션의 첫 결정은 어떤 `planned`를 active로 올릴지 — `progress.md`의 Recommended Next Step에 5개 후보 정리.
 
 ## In my head right now (다음 세션이 이 부분은 다시 읽지 않아도 됨)
 
@@ -20,32 +20,38 @@
 - 그래프는 `src/lib/graph.ts`가 모듈 로드 시 결정론적 force 레이아웃을 한 번 계산해 `graphData`로 export. 시드 PRNG라 SSR/CSR 일치.
 - 검증은 `npm run check` (lint + typecheck + build) 한 줄로 끝. 별도 test runner 없음.
 - Vercel은 환경변수 `USE_DEFAULT_DIST=1`이 있어 표준 `.next`를 사용하고, 로컬은 `.next.nosync` 유지 (`next.config.mjs`가 분기).
+- **이번 세션 변경분은 아직 커밋되지 않음** — 워킹 트리에 6개 파일 수정 + 3개 상태 파일 갱신. 사용자가 `commit`·`push`를 명시적으로 허락하면 진행.
 
-## Files to read first
+## What just shipped (in working tree, uncommitted)
 
-1. `feature_list.json` — `active_feature`의 `done_criteria`·`files`.
-2. `progress.md` — Recommended Next Step.
-3. `src/lib/types.ts` — `AnalysisNode` 정의가 스키마 변경의 출발점.
-4. `src/content/ontology.ts` — 5개 analyses와 6개 patterns 한자리에 있음.
-5. `src/app/collection/[slug]/page.tsx` — analysis 상세 페이지 구조 (패턴 섹션을 어디에 넣을지 결정).
-6. `src/components/NodeLinks.tsx` — `Accent` 타입은 이미 `gold` 포함, pop 그룹에 pattern→analysis 역참조를 추가하면 됨.
+`analysis-pattern-edges` 전 항목 완료.
+
+- 스키마: `AnalysisNode.demonstratesPatterns?: string[]` (optional 시작 — 5개 모두 채워졌으니 다음 라운드에서 필수로 굳혀도 됨).
+- 데이터: toss→[card-grid, navigation-bar], krds→[form-validation, navigation-bar], gmarket→[card-grid, data-table], wanted→[card-grid], letters→[empty-state]. 총 8개 새 엣지.
+- 헬퍼: `getPatternsForAnalysis(slug)`·`getAnalysesForPattern(slug)` + `getOntologyStats` 엣지 합계 식 갱신.
+- 그래프: `GraphEdgeKind`에 `analysis-pattern` 추가, `buildEdges`에서 analysis 루프 안에 `demonstratesPatterns` 처리.
+- UI: `/collection/[slug]` 사이드바 두 번째 카드(amber dot, "이 사이트가 보여주는 패턴"). `/wiki/[slug]` PatternView NodeLinks 세 번째 그룹(pop dot, "이 패턴을 보여주는 분석").
+
+## Files to read first (다음 세션)
+
+1. `feature_list.json` — `active_feature`가 null. `planned` 중 무엇을 올릴지 결정.
+2. `progress.md` — Recommended Next Step에 5개 후보 + 권장(`learn-path-with-patterns`).
+3. 선택한 active feature의 `files` 배열에서 시작.
 
 ## Decisions already made
 
-- analysis→pattern 엣지는 **별도 필드** `demonstratesPatterns`로 추가한다 (기존 `demonstrates`는 concept 전용으로 유지). 마이그레이션 비용 없음 + 의미 분리 명확.
-- 그래프 엣지 종류는 `analysis-pattern` 신규 추가 (concept-concept · analysis-concept · pattern-concept · pattern-pattern · path-concept · **analysis-pattern**).
-- pattern 페이지의 새 NodeLinks 그룹 라벨은 "이 패턴을 보여주는 분석", accent=`pop`.
-- analysis 페이지의 새 섹션 라벨은 "이 사이트가 보여주는 패턴", amber 도트.
+- `analysis-pattern-edges`의 스키마는 **optional 필드 + 5개 모두 채움** 패턴으로 굳었다. 다음에 새 analysis 추가 시 관행적으로 함께 채울 것. 강제 필수화는 별도 작은 작업으로 미룸.
+- OntologyGraph 시각화는 새 엣지 종류 추가 시 별도 색·스타일 없이 기존 stroke로 렌더 (kind는 데이터에 남아 있으니 나중에 필요하면 색 분기 가능).
 
 ## Open questions for the user (필요 시 확인)
 
-1. `demonstratesPatterns`를 모든 analysis에 필수로 둘지, optional로 둘지. 시작은 optional, 5개 analyses에 모두 채우고 나면 필수로 굳히는 게 자연스러움.
-2. analysis 상세 페이지 안에서 '패턴' 섹션 위치 — 색·타이포·여백 같은 design spec 섹션의 위/아래 어디.
-3. pattern slug 매핑 후보(`progress.md`의 Recommended Next Step에 적은 안)가 적절한지 사람의 한 번 검토.
+1. **커밋·푸시 허락**: 이번 세션 변경 6+3개 파일을 커밋해도 되는지. 메시지 후보: `Phase 4: analysis→pattern edges` 또는 `feat: cross-link analyses to patterns`.
+2. **다음 active feature**: 권장 `learn-path-with-patterns` 또는 사용자가 다른 것을 골라도 됨.
+3. (선택) **OntologyGraph 새 엣지에 시각 차별화 줄지** — 현재는 색·스타일 동일. 필요하면 amber 톤으로 분기 가능.
 
 ## Blockers
 
-없음. 위 질문 1·2·3은 진행하면서 작은 결정이라 막힘은 아님.
+없음. 커밋 허가만 받으면 라이브 검증까지 한 번에 진행.
 
 ## Restart Path (clean cold start, 1분 안에)
 
@@ -56,11 +62,11 @@ cat feature_list.json | head -40
 cat progress.md
 ```
 
-위 셋만 거치면 이번 세션의 컨텍스트가 95% 회복된다. 추가 정보가 필요하면 `git log --oneline -10`.
+추가로 `git status`로 미커밋 변경을 먼저 확인하면 더 빠르다.
 
 ## Next Session — 첫 행동
 
 1. `./init.sh` 실행 (clean build 확인).
-2. `feature_list.json`의 `active_feature` 확인.
-3. 위 Decisions·Open questions 한 번 읽고 사용자에게 1번(필수/optional) 한 가지만 묻는다. 2·3은 코드 보면서 같이 정해도 됨.
-4. `progress.md`의 Recommended Next Step 1번부터 진행.
+2. `git status` — 미커밋 변경 6+3개가 있다면 이번 세션 산출물. 사용자에게 커밋 여부 확인.
+3. `feature_list.json`의 `active_feature` 선정 — `progress.md` Recommended Next Step의 5개 후보 중 하나.
+4. 선정 후 `active_feature` 값 갱신하고 작업 시작.

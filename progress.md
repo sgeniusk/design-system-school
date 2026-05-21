@@ -8,19 +8,20 @@
 
 ## Current State
 
-배포·온톨로지·UI 세 축이 모두 가동 중인 상태.
+배포·온톨로지·UI·교차 엣지까지 모두 가동 중인 상태.
 
 - GitHub `sgeniusk/design-system-school` (public) → Vercel `gomgomee-s-projects/design-system-school` 자동 배포.
-- 라이브: https://design-system-school.vercel.app
-- 그래프 통계: 개념 21 · 패턴 6 · 분석 5 · 학습 경로 2 · 고유 연결 105.
+- 라이브: https://design-system-school.vercel.app (이번 세션 변경분은 커밋 보류 — 사용자 허가 대기).
+- 그래프 통계: 개념 21 · 패턴 6 · 분석 5 · 학습 경로 2. 이번 세션에서 analysis→pattern 엣지 8개 추가.
 - 4 노드 타입(concept/pattern/analysis/path) × 의미색(indigo/amber/coral/teal) 매핑 안착.
 - 라이트·다크 모드 토글 작동 (theming 개념을 사이트가 직접 실증).
 - 위키에 sticky 검색 + 카테고리 점프 앵커.
 - 홈에 '패턴 미리보기' 섹션 + 푸터에 패턴/Letters 링크.
+- analysis 상세 페이지(`/collection/[slug]`)에 amber 카드 '이 사이트가 보여주는 패턴'. pattern 위키(`/wiki/[slug]`)에 pop 그룹 '이 패턴을 보여주는 분석'.
 
 ## Current Objective
 
-`analysis-pattern-edges` feature 완료 — analysis 노드가 pattern도 demonstrate하도록 스키마·페이지·그래프를 확장한다. 자세한 완료 기준은 `feature_list.json`.
+`active_feature`가 비어 있다. 다음 세션 첫 작업은 `feature_list.json`의 `planned` 중 하나를 선택해 `active_feature`로 올리는 것. 후보 정리는 아래 "Recommended Next Step".
 
 ## What was done in the last session(s)
 
@@ -31,47 +32,40 @@
 | `274cfe0` | Phase 2 — concept 11개 확장 (behavior/content/engineering 카테고리) |
 | `bd5e898` | Phase 3a — WikiBrowser 검색·점프 + 홈 패턴 섹션 + 브랜드 폴리시 |
 | `c57d16f` | Phase 3b — 다크 모드 (theming 토큰 갈아끼우기) |
+| `e00a097` | 프로젝트 하니스 (feature_list·progress·handoff·init.sh) |
+| _커밋 대기_ | analysis→pattern 엣지 — 5개 analyses에 demonstratesPatterns 채움 + 두 페이지 UI 추가 |
 
 ## Recommended Next Step
 
-`analysis-pattern-edges`를 다음 순서로 진행.
+`active_feature`를 다음 중 하나로 정하고 시작.
 
-1. `src/lib/types.ts` — `AnalysisNode`에 `demonstratesPatterns: string[]` 필드 추가 (선택형 시작 → 필수로 굳히기).
-2. `src/content/ontology.ts` — 기존 5개 analyses에 적절한 pattern slug 연결. 후보:
-   - **toss**: `card-grid`, `navigation-bar`
-   - **krds**: `form-validation`, `navigation-bar`
-   - **gmarket**: `card-grid`, `data-table`
-   - **wanted**: `card-grid`
-   - **letters**: `empty-state`
-3. `src/lib/content.ts` — `getPatternsForAnalysis(slug)`·`getAnalysesForPattern(slug)`.
-4. `src/lib/graph.ts` — `GraphEdgeKind`에 `analysis-pattern` 추가, `buildEdges`에서 연결, `getGraphStats` 영향 확인.
-5. `src/app/collection/[slug]/page.tsx` — 상세 페이지에 '이 사이트가 보여주는 패턴' 섹션 (amber 도트).
-6. `src/app/wiki/[slug]/page.tsx` — pattern view의 NodeLinks에 '이 패턴을 보여주는 분석' 그룹 (pop 도트).
-7. `npm run check` → commit → push → 라이브 확인.
+1. **`learn-path-with-patterns`** — 권장. 그래프의 마지막 닫히지 않은 축(path→pattern). 스키마 변경 + 시각화 한 곳까지.
+2. **`tokendemo-theme-aware`** — 작고 명확. 라이트·다크 토큰 값 실시간 노출.
+3. **`ontology-graph-mobile-polish`** — 모바일 UX 개선. 좌표 산정 변경 가능성 있어 회귀 주의.
+4. **`ai-builder-school-cross-link`** — 헤더 외부 링크. 10분 안.
+5. **`design-md-auto-extraction`** — 스크립트 도구. 디자인 분석 자동화 실험.
+
+사용자에게 1번을 우선 추천. 다른 작은 항목(2·4)을 함께 묶는 것도 가능.
 
 ## Blockers
 
-없음. 스키마 fork 결정만 미리 — `demonstrates`를 split할지(`demonstratesConcepts` + `demonstratesPatterns`) 아니면 새 필드만 추가할지. 현재 코드 호환성과 다음 세션 사용성 보고 결정.
+없음.
 
-## Files most recently touched
+## Files most recently touched (이번 세션)
 
-다크 모드·위키·홈 라운드에서 손댄 파일.
-
-- `src/app/layout.tsx` — 사전 페인트 스크립트, suppressHydrationWarning.
-- `src/components/ThemeToggle.tsx` — sun/moon 토글.
-- `src/app/globals.css` — `[data-theme="dark"]` 토큰 블록.
-- `src/components/WikiBrowser.tsx` — sticky 검색 + 카테고리 섹션.
-- `src/app/wiki/page.tsx` — WikiBrowser로 단순화.
-- `src/app/page.tsx` — 'Patterns' 섹션 + featuredPatterns.
-- `src/components/Layout.tsx` — BrandMark amber dot, 푸터 4열, ThemeToggle 배치.
-- `src/components/Section.tsx` — Accent 타입에 `gold` 추가.
+- `src/lib/types.ts` — `AnalysisNode.demonstratesPatterns?: string[]` 추가.
+- `src/content/ontology.ts` — 5개 analyses에 demonstratesPatterns 채움.
+- `src/lib/content.ts` — `getPatternsForAnalysis`·`getAnalysesForPattern` + 통계 식 갱신.
+- `src/lib/graph.ts` — `GraphEdgeKind`에 `analysis-pattern` 추가, `buildEdges`에 추가.
+- `src/app/collection/[slug]/page.tsx` — 사이드바에 amber 카드.
+- `src/app/wiki/[slug]/page.tsx` PatternView — pop 그룹 추가.
 
 ## Verification Evidence
 
-- 마지막 `npm run check` (Phase 3b 직전): exit 0, 33 static pages, `/wiki/[slug]` 27 paths.
-- 라이브 smoke: `curl https://design-system-school.vercel.app/wiki/empty-state` → 200, "이 패턴이 푸는 문제" 콜아웃 노출. `curl /wiki/microcopy` → 200, title "마이크로카피 — 위키 · Design System School". `/ontology` 통계 dl에 "패턴 노드 6" 노출.
-- 라이브 자동 배포: GitHub push 후 ~1분에 production 도메인 롤오버 (이전 검증).
+- `npm run check` (이번 세션 종료 직전): exit 0, 44 static pages, `/ontology` 8.13 kB (이전 8.07 kB).
+- `/wiki/[slug]` 27 paths 유지 (개념 21 + 패턴 6). `/collection/[slug]` 5 paths 유지.
+- 라이브 커밋 보류 — 사용자가 commit·push 명시 허가 후 진행.
 
 ## Next Session
 
-세부 cold start 절차는 `session-handoff.md` 참고. 핵심 한 줄: `./init.sh` 돌리고 `feature_list.json`의 `active_feature`(`analysis-pattern-edges`)부터 시작.
+세부 cold start 절차는 `session-handoff.md` 참고. 핵심 한 줄: `./init.sh` 돌리고 `feature_list.json`의 `active_feature` 선정부터 시작.

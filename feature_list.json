@@ -1,6 +1,6 @@
 {
   "$schema": "Local schema — features[].{id,name,description,status,dependencies,done_criteria,files,evidence?}. status ∈ done | active | planned | blocked.",
-  "active_feature": "analysis-pattern-edges",
+  "active_feature": null,
   "features": [
     {
       "id": "letters-analysis-node",
@@ -148,27 +148,27 @@
       "id": "analysis-pattern-edges",
       "name": "Analysis → pattern edges",
       "description": "analysis 노드가 concept뿐 아니라 pattern도 demonstrate하도록 확장. '이 사이트가 보여주는 패턴'을 명시해 그래프의 두 번째 축을 닫는다.",
-      "status": "active",
+      "status": "done",
       "dependencies": ["pattern-node-type"],
       "done_criteria": [
-        "AnalysisNode에 demonstratesPatterns: string[] 추가 (또는 demonstrates를 유형 분리)",
-        "5개 analyses 각각에 적절한 pattern slug 1~3개 연결",
-        "lib/content.ts에 getPatternsForAnalysis·getAnalysesForPattern",
-        "lib/graph.ts에 analysis-pattern 엣지 종류",
-        "OntologyGraph가 새 엣지 종류를 시각화",
-        "/collection/[slug] 상세 페이지에 '이 사이트가 보여주는 패턴' 섹션",
-        "/wiki/[slug] pattern 페이지 NodeLinks에 '이 패턴을 보여주는 분석' 그룹",
-        "npm run check 통과 + 라이브 확인"
+        "AnalysisNode에 demonstratesPatterns?: string[] 추가 (별도 필드로 분리, 기존 demonstrates는 concept 전용 유지)",
+        "5개 analyses 각각에 1~2개 pattern slug 연결 (toss·krds·gmarket·wanted·letters)",
+        "lib/content.ts에 getPatternsForAnalysis·getAnalysesForPattern + getOntologyStats 갱신",
+        "lib/graph.ts에 analysis-pattern 엣지 종류 + buildEdges 추가",
+        "OntologyGraph는 기존 엣지 렌더 경로로 자동 시각화 (kind 필드만 추가, 동일 시각 처리)",
+        "/collection/[slug] 사이드바에 amber dot '이 사이트가 보여주는 패턴' 카드",
+        "/wiki/[slug] PatternView NodeLinks에 pop dot '이 패턴을 보여주는 분석' 그룹",
+        "npm run check 통과 (44 static pages, lint+typecheck+build clean)"
       ],
       "files": [
         "src/lib/types.ts",
         "src/content/ontology.ts",
         "src/lib/content.ts",
         "src/lib/graph.ts",
-        "src/components/OntologyGraph.tsx",
         "src/app/collection/[slug]/page.tsx",
         "src/app/wiki/[slug]/page.tsx"
-      ]
+      ],
+      "evidence": "로컬 npm run check 통과 (44 static pages, ontology 페이지 8.07→8.13kB). 커밋·라이브 확인 보류 — 사용자 명시 허가 대기."
     },
     {
       "id": "tokendemo-theme-aware",

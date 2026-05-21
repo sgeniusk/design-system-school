@@ -12,6 +12,7 @@ import {
 } from "@/lib/types";
 import {
   getAnalysesForConcept,
+  getAnalysesForPattern,
   getConcept,
   getConcepts,
   getConceptsForPattern,
@@ -129,6 +130,7 @@ function PatternView({ slug }: { slug: string }) {
   const Body = getPatternBody(slug);
   const concepts = getConceptsForPattern(slug);
   const relatedPatterns = getRelatedPatterns(slug);
+  const analyses = getAnalysesForPattern(slug);
 
   const groups: NodeLinkGroup[] = [
     {
@@ -150,6 +152,16 @@ function PatternView({ slug }: { slug: string }) {
         sub: PATTERN_CATEGORY_LABEL[p.category],
       })),
       emptyText: "연결된 패턴이 없습니다.",
+    },
+    {
+      label: "이 패턴을 보여주는 분석",
+      accent: "pop",
+      items: analyses.map((a) => ({
+        href: `/collection/${a.slug}`,
+        title: a.title,
+        sub: a.org,
+      })),
+      emptyText: "아직 연결된 분석이 없습니다.",
     },
   ];
 

@@ -8,12 +8,13 @@ import { TypeScale } from "@/components/analysis/TypeScale";
 import { SpacingRadius } from "@/components/analysis/SpacingRadius";
 import { ComponentList } from "@/components/analysis/ComponentList";
 import { PrinciplesPanel } from "@/components/analysis/PrinciplesPanel";
-import { DELIVERY_LABEL, INDUSTRY_LABEL } from "@/lib/types";
+import { DELIVERY_LABEL, INDUSTRY_LABEL, PATTERN_CATEGORY_LABEL } from "@/lib/types";
 import {
   getAnalyses,
   getAnalysis,
   getConceptsForAnalysis,
   getDesignSpec,
+  getPatternsForAnalysis,
 } from "@/lib/content";
 import { specToMarkdown } from "@/lib/design-md";
 import { getAnalysisBody } from "@/content/bodies";
@@ -62,6 +63,7 @@ export default async function AnalysisPage({
 
   const Body = getAnalysisBody(slug);
   const concepts = getConceptsForAnalysis(slug);
+  const patterns = getPatternsForAnalysis(slug);
   const spec = getDesignSpec(slug);
   const designMd = spec ? specToMarkdown(spec) : null;
 
@@ -183,6 +185,37 @@ export default async function AnalysisPage({
                 ))}
               </ul>
             </div>
+
+            {patterns.length > 0 ? (
+              <div className="rounded-xl border border-line bg-bg-soft/40 p-6">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-pill bg-gold" aria-hidden />
+                  <h2 className="eyebrow text-ink-faint">
+                    이 사이트가 보여주는 패턴
+                  </h2>
+                </div>
+                <ul className="mt-3 grid gap-1.5">
+                  {patterns.map((p) => (
+                    <li key={p.slug}>
+                      <Link
+                        href={`/wiki/${p.slug}`}
+                        className="group flex items-baseline gap-2 rounded-md -mx-2.5 px-2.5 py-2 transition-colors hover:bg-surface"
+                      >
+                        <span className="text-[14px] font-medium text-ink group-hover:text-gold-ink">
+                          {p.title}
+                        </span>
+                        <span className="truncate text-[12px] text-ink-faint">
+                          {PATTERN_CATEGORY_LABEL[p.category]}
+                        </span>
+                        <span className="ml-auto font-mono text-[12px] text-ink-faint transition-transform group-hover:translate-x-0.5">
+                          →
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </aside>
         </div>
 
