@@ -269,6 +269,24 @@
       "evidence": "commit 6346f4a · /ontology 8.18→8.5kB (armed state + matchMedia 코드 영향)"
     },
     {
+      "id": "graph-edge-color-coding",
+      "name": "Ontology graph edge color coding",
+      "description": "GraphEdgeKind 6종을 시각적으로 구분. concept-concept=회색 외에 출발 노드 색(pattern=amber·analysis=coral·path=teal)을 따른다. 그래프 4축이 닫힌 정보를 시각에서도 보이게 한다.",
+      "status": "done",
+      "dependencies": ["pattern-node-type", "analysis-pattern-edges", "learn-path-with-patterns"],
+      "done_criteria": [
+        "OntologyGraph.tsx에 EDGE_STROKE: Record<GraphEdgeKind, string> 매핑 추가",
+        "<line>의 stroke를 kind 색으로 — hover 시 opacity 0.95, 평소 0.45, dim 0.08",
+        "필터 범례 아래에 '엣지 색은 출발 노드 종류를 따른다' 한 줄 안내",
+        "기존 호버·armed·dimmed 인터랙션이 그대로 유지",
+        "npm run check 통과 (44 static pages)"
+      ],
+      "files": [
+        "src/components/OntologyGraph.tsx"
+      ],
+      "evidence": "로컬 npm run check 통과. /ontology에서 patterns→concepts 엣지(amber), analyses→concepts/patterns(coral), paths→concepts/patterns(teal)이 시각적으로 분리됨."
+    },
+    {
       "id": "design-md-extract-validate",
       "name": "Extract tool validation with new analysis",
       "description": "design-md-auto-extraction 도구를 실제 한 사이트에 적용해 신규 analysis 노드를 끝까지 추가. 도구의 한계와 실제 사람 검수 비용을 측정.",

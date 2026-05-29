@@ -5,7 +5,12 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { GRAPH_VIEWBOX } from "@/lib/graph";
-import type { GraphEdge, GraphNodeKind, GraphVizNode } from "@/lib/graph";
+import type {
+  GraphEdge,
+  GraphEdgeKind,
+  GraphNodeKind,
+  GraphVizNode,
+} from "@/lib/graph";
 
 type KindStyle = { dot: string; fill: string; soft: string; label: string };
 
@@ -37,6 +42,20 @@ const KIND_STYLE: Record<GraphNodeKind, KindStyle> = {
 };
 
 const KIND_ORDER: GraphNodeKind[] = ["concept", "pattern", "analysis", "path"];
+
+/**
+ * 엣지 stroke 색 — 출발 노드의 종류를 따른다 (concept끼리는 회색).
+ * 6종 엣지 종류를 4색으로 묶어 노드 색과 의미를 맞춤.
+ */
+const EDGE_STROKE: Record<GraphEdgeKind, string> = {
+  "concept-concept": "rgb(var(--ink-mute))",
+  "pattern-concept": "rgb(var(--gold))",
+  "pattern-pattern": "rgb(var(--gold))",
+  "analysis-concept": "rgb(var(--pop))",
+  "analysis-pattern": "rgb(var(--pop))",
+  "path-concept": "rgb(var(--mint))",
+  "path-pattern": "rgb(var(--mint))",
+};
 
 /** 긴 노드 제목을 그래프 라벨용으로 줄인다 — "토스 — Apps in Toss" → "토스". */
 function shortLabel(label: string): string {
@@ -191,6 +210,11 @@ export function OntologyGraph({
         </span>
       </div>
 
+      {/* 엣지 색 안내 — 6종 엣지가 4색으로 묶임. */}
+      <p className="mb-3 text-[12px] text-ink-faint">
+        엣지 색은 출발 노드 종류를 따른다 — 패턴 amber · 분석 coral · 경로 teal · 개념끼리 회색.
+      </p>
+
       <div className="overflow-hidden rounded-2xl border border-line bg-surface/70 shadow-soft">
         <svg
           viewBox={`0 0 ${GRAPH_VIEWBOX.width} ${GRAPH_VIEWBOX.height}`}
@@ -207,6 +231,8 @@ export function OntologyGraph({
               const incident =
                 hoveredId === e.source || hoveredId === e.target;
               const dimmed = hoveredId !== null && !incident;
+              // 엣지 색은 kind를 따른다 — hover 시 같은 색을 더 진하게 노출.
+              const stroke = EDGE_STROKE[e.kind];
               return (
                 <line
                   key={e.id}
@@ -214,13 +240,9 @@ export function OntologyGraph({
                   y1={a.y}
                   x2={b.x}
                   y2={b.y}
-                  stroke={
-                    incident
-                      ? "rgb(var(--ink-mute))"
-                      : "rgb(var(--border-strong))"
-                  }
-                  strokeWidth={incident ? 2 : 1.4}
-                  strokeOpacity={dimmed ? 0.1 : incident ? 0.9 : 0.55}
+                  stroke={stroke}
+                  strokeWidth={incident ? 2.2 : 1.4}
+                  strokeOpacity={dimmed ? 0.08 : incident ? 0.95 : 0.45}
                 />
               );
             })}
