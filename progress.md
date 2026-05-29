@@ -38,7 +38,8 @@
 | `d178bda` | Phase 6 — TokenDemo theme-aware (getComputedStyle + MutationObserver) |
 | `ccddc1d` | Phase 7 — AI Builder School cross-link (헤더·푸터) |
 | `6346f4a` | Phase 8 — OntologyGraph 모바일 폴리시 (matchMedia · 두 번 탭) |
-| _커밋 대기_ | Phase 9 — extract-design-spec.ts 도구 + README + feature_list/progress/handoff 갱신 |
+| `5926c25` | Phase 9 — extract-design-spec.ts 도구 + README + 세션 정리 |
+| `c81ab78` | Phase 10 — OntologyGraph 엣지 색 분기 (kind별 EDGE_STROKE 매핑) |
 
 ## Recommended Next Step
 
