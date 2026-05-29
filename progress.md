@@ -10,7 +10,7 @@
 
 배포·온톨로지·UI·교차 엣지·학습 경로·토큰 데모·모바일 그래프·외부 링크·추출 도구까지 모두 가동.
 
-- GitHub `sgeniusk/design-system-school` (public) → Vercel 자동 배포. Phase 4·5·6·7·8 모두 push 완료. Phase 9는 워킹 트리에서 커밋 대기.
+- GitHub `sgeniusk/design-system-school` (public) → Vercel 자동 배포. Phase 4~10 모두 push 완료.
 - 라이브: https://design-system-school.vercel.app
 - 그래프 통계: 개념 21 · 패턴 6 · 분석 5 · 학습 경로 2. 엣지 4축이 모두 닫힘 (concept-concept · pattern-(concept/pattern) · analysis-(concept/pattern) · path-(concept/pattern)).
 - 4 노드 타입(concept/pattern/analysis/path) × 의미색(indigo/amber/coral/teal) 매핑 안착.
@@ -21,7 +21,7 @@
 
 ## Current Objective
 
-`active_feature`가 비어 있다. 큰 작업 4개(Phase 4~8)·도구 1개(Phase 9)를 끝낸 상태. 다음 라운드는 follow-up 한 가지(`design-md-extract-validate` — 추출 도구 실전 검증)와 사용자가 새로 떠올린 아이디어에서 시작.
+`active_feature`가 비어 있다. 큰 작업 4개(Phase 4~8)·도구 1개(Phase 9)·시각 폴리시 1개(Phase 10)를 끝낸 상태. 다음 라운드는 follow-up 한 가지(`design-md-extract-validate` — 추출 도구 실전 검증)와 사용자가 새로 떠올린 아이디어에서 시작.
 
 ## What was done in the last session(s)
 
